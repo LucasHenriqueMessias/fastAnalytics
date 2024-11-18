@@ -159,7 +159,7 @@ export const ColorModeContext = createContext({
 export const useMode = () => {
   const [mode, setMode] = useState(() => {
     const savedMode = localStorage.getItem("colorMode");
-    return savedMode ? savedMode : "light";
+    return savedMode ? savedMode : "dark";
   });
 
   useEffect(() => {
