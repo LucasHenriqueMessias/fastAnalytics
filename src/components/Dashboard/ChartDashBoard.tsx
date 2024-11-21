@@ -26,6 +26,7 @@ const ChartDashBoard = () => {
   const [bniCountsData, setBniCountsData] = React.useState<{ label: string, count: number }[]>([]);
   const [indicacaoCountsData, setIndicacaoCountsData] = React.useState<{ label: string, count: number }[]>([]);
   const [indicacaoConsultorCountsData, setIndicacaoConsultorCountsData] = React.useState<{ label: string, count: number }[]>([]);
+  const [sinalAmareloData, setSinalAmareloData] = React.useState<{ label: string, count: number }[]>([]);
 
   React.useEffect(() => {
     axios.get('http://localhost:3002/tab-prospeccao/count-empresas-consultor', {
@@ -126,6 +127,21 @@ const ChartDashBoard = () => {
     }).catch(error => {
       console.error(error);
     });
+
+    axios.get('http://localhost:3002/tab-sinal-amarelo/sinal-amarelo-pendente', {
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+      }
+    }).then(response => {
+      const data = response.data;
+      setSinalAmareloData(data.map((item: { user: string, count: string }) => ({
+        label: item.user,
+        count: parseInt(item.count, 10)
+      })));
+    }).catch(error => {
+      console.error(error);
+    });
+
   }, []);
 
   // console.log(data);
@@ -243,6 +259,29 @@ const ChartDashBoard = () => {
 
   };
 
+  const sinalAmareloChartData = {
+    labels: sinalAmareloData.map(item => item.label),
+    datasets: [{
+      label: 'Sinal Amarelo Pendente',
+      data: sinalAmareloData.map(item => item.count),
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        // ...additional colors if needed...
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        // ...additional colors if needed...
+      ],
+      borderWidth: 1
+    }]
+  };
+
   const options = {
     scales: {
       y: {
@@ -266,6 +305,7 @@ const ChartDashBoard = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '15%' }}>
         {bniCountsData.length > 0 ? <Pie data={bniCountsChartData} /> : 'Loading...'}
         {indicacaoCountsData.length > 0 ? <Pie data={indicacaoCountsChartData}  /> : 'Loading...'}
+        {sinalAmareloData.length > 0 ? <Pie data={sinalAmareloChartData} /> : 'Loading...'}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%' }}>
       </div>

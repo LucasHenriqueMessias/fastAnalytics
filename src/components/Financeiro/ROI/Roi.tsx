@@ -131,18 +131,49 @@ const Roi = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const createBarChartData = (label: string, dataKey: keyof RoiData) => ({
-    labels: filteredData.map((data) => formatDate(data.data_criacao)),
-    datasets: [
-      {
-        label,
-        data: filteredData.map((data) => data[dataKey]),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
-  });
+  const createBarChartData = (label: string, dataKey: keyof RoiData) => {
+    const colorMap: { [key: string]: string } = {
+      'Máquina de Cartão': 'rgba(75, 192, 192, 0.6)',
+      'Empréstimos/Financiamentos': 'rgba(54, 162, 235, 0.6)',
+      'Telefonia': 'rgba(255, 206, 86, 0.6)',
+      'Contabilidade': 'rgba(153, 102, 255, 0.6)',
+      'Taxas Bancárias': 'rgba(255, 159, 64, 0.6)',
+      'Taxas Administrativas': 'rgba(255, 99, 132, 0.6)',
+      'Investimentos': 'rgba(75, 192, 192, 0.6)',
+      'Jurídico': 'rgba(54, 162, 235, 0.6)',
+      'Mensalidade ROI': 'rgba(255, 206, 86, 0.6)',
+      'Férias': 'rgba(153, 102, 255, 0.6)',
+      'Aumento de Equipe': 'rgba(255, 159, 64, 0.6)',
+    };
+  
+    const borderColorMap: { [key: string]: string } = {
+      'Máquina de Cartão': 'rgba(75, 192, 192, 1)',
+      'Empréstimos/Financiamentos': 'rgba(54, 162, 235, 1)',
+      'Telefonia': 'rgba(255, 206, 86, 1)',
+      'Contabilidade': 'rgba(153, 102, 255, 1)',
+      'Taxas Bancárias': 'rgba(255, 159, 64, 1)',
+      'Taxas Administrativas': 'rgba(255, 99, 132, 1)',
+      'Investimentos': 'rgba(75, 192, 192, 1)',
+      'Jurídico': 'rgba(54, 162, 235, 1)',
+      'Mensalidade ROI': 'rgba(255, 206, 86, 1)',
+      'Férias': 'rgba(153, 102, 255, 1)',
+      'Aumento de Equipe': 'rgba(255, 159, 64, 1)',
+    };
+  
+    return {
+      labels: filteredData.map((data) => formatDate(data.data_criacao)),
+      datasets: [
+        {
+          label,
+          data: filteredData.map((data) => data[dataKey]),
+          backgroundColor: colorMap[label],
+          borderColor: borderColorMap[label],
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+  
 
   const options = {
     responsive: true,
