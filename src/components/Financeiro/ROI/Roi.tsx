@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { Line, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
+ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend);
 
+interface RoiData {
+  id: number;
+  cnpj: string;
+  usuario: string;
+  data_criacao: string;
+  maquina_cartao: number;
+  emprestimos_financiamentos: number;
+  telefonia: number;
+  contabilidade: number;
+  taxas_bancarias: number;
+  taxas_administrativas: number;
+  investimentos: number;
+  juridico: number;
+  mensalidade_roi: number;
+  ferias: number;
+  aumento_equipe: number;
+}
 
 const Roi = () => {
-  const [roiData, setRoiData] = useState([]);
+  const [roiData, setRoiData] = useState<RoiData[]>([]);
   const [open, setOpen] = useState(false);
   const [newRecord, setNewRecord] = useState({
     cnpj: '',
@@ -25,6 +45,7 @@ const Roi = () => {
     ferias: '',
     aumento_equipe: ''
   });
+  const [filteredData, setFilteredData] = useState<RoiData[]>([]);
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -48,6 +69,10 @@ const Roi = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setFilteredData(roiData);
+  }, [roiData]);
+
   const fetchData = async () => {
     try {
       const token = getAccessToken();
@@ -57,6 +82,7 @@ const Roi = () => {
         }
       });
       setRoiData(response.data);
+      console.log(response)
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
@@ -89,6 +115,43 @@ const Roi = () => {
     }
   };
 
+  const handleFilterModelChange = (model: GridFilterModel) => {
+    const filteredRows = roiData.filter((row) => {
+      return model.items.every((item) => {
+        if (!item.value) return true;
+        const columnField = item.field as keyof RoiData;
+        return row[columnField]?.toString().includes(item.value.toString());
+      });
+    });
+    setFilteredData(filteredRows);
+  };
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const createBarChartData = (label: string, dataKey: keyof RoiData) => ({
+    labels: filteredData.map((data) => formatDate(data.data_criacao)),
+    datasets: [
+      {
+        label,
+        data: filteredData.map((data) => data[dataKey]),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' as const },
+      title: { display: true, text: '' },
+    },
+  };
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -98,7 +161,35 @@ const Roi = () => {
         Adicionar Registro
       </Button>
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-        <DataGrid rows={roiData} columns={columns} autoPageSize />
+        <DataGrid
+          rows={roiData}
+          columns={columns}
+          autoPageSize
+          onFilterModelChange={handleFilterModelChange}
+        />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
+        <Bar data={createBarChartData('Máquina de Cartão', 'maquina_cartao')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Máquina de Cartão por Data de Criação' } } }} />
+        <Bar data={createBarChartData('Empréstimos/Financiamentos', 'emprestimos_financiamentos')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Empréstimos/Financiamentos por Data de Criação' } } }} />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
+        <Bar data={createBarChartData('Telefonia', 'telefonia')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Telefonia por Data de Criação' } } }} />
+        <Bar data={createBarChartData('Contabilidade', 'contabilidade')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Contabilidade por Data de Criação' } } }} />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
+        <Bar data={createBarChartData('Taxas Bancárias', 'taxas_bancarias')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Taxas Bancárias por Data de Criação' } } }} />
+        <Bar data={createBarChartData('Taxas Administrativas', 'taxas_administrativas')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Taxas Administrativas por Data de Criação' } } }} />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
+        <Bar data={createBarChartData('Aumento de Equipe', 'aumento_equipe')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Aumento de Equipe por Data de Criação' } } }} />
+        <Bar data={createBarChartData('Férias', 'ferias')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Férias por Data de Criação' } } }} />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>
+        <Bar data={createBarChartData('Investimentos', 'investimentos')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Investimentos por Data de Criação' } } }} />
+        <Bar data={createBarChartData('Jurídico', 'juridico')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Jurídico por Data de Criação' } } }} />
+      </div>
+      <div style={{ height: 400, width: '50%', marginTop: 20 }}>
+        <Bar data={createBarChartData('Mensalidade ROI', 'mensalidade_roi')} options={{ ...options, plugins: { ...options.plugins, title: { display: true, text: 'Mensalidade ROI por Data de Criação' } } }} />
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Registro</DialogTitle>
