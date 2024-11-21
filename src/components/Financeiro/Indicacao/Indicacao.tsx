@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
-
-
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const Indicacao = () => {
   const [indicacaoData, setIndicacaoData] = useState([]);
@@ -17,6 +17,7 @@ const Indicacao = () => {
     atuacao: '',
     status: ''
   });
+  const [chartData, setChartData] = useState<{ labels: string[], datasets: { label: string, data: number[], backgroundColor: string[] }[] }>({ labels: [], datasets: [] });
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -30,6 +31,7 @@ const Indicacao = () => {
 
   useEffect(() => {
     fetchData();
+    fetchChartData();
   }, []);
 
   const fetchData = async () => {
@@ -43,6 +45,32 @@ const Indicacao = () => {
       setIndicacaoData(response.data);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
+    }
+  };
+
+  const fetchChartData = async () => {
+    try {
+      const token = getAccessToken();
+      const response = await axios.get('http://localhost:3002/tab-indicacao-cliente/count-segmento', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = response.data;
+      const labels = data.map((item: { atuacao: string }) => item.atuacao);
+      const counts = data.map((item: { count: number }) => item.count);
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: 'Segmento de Atuação',
+            data: counts,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+          }
+        ]
+      });
+    } catch (error) {
+      console.error('Erro ao buscar dados do gráfico:', error);
     }
   };
 
@@ -81,9 +109,14 @@ const Indicacao = () => {
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>
-      <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-        <DataGrid rows={indicacaoData} columns={columns} autoPageSize />
-      </div>
+      <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center">
+        <div style={{ height: 400, width: '100%', marginTop: 20 }}>
+          <DataGrid rows={indicacaoData} columns={columns} autoPageSize />
+        </div>
+        <div style={{ height: 400, width: '50%',  marginTop: 20 }}>
+          <Bar data={chartData} />
+        </div>
+      </Box>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Registro</DialogTitle>
         <DialogContent>
