@@ -27,6 +27,7 @@ const ChartDashBoard = () => {
   const [indicacaoCountsData, setIndicacaoCountsData] = React.useState<{ label: string, count: number }[]>([]);
   const [indicacaoConsultorCountsData, setIndicacaoConsultorCountsData] = React.useState<{ label: string, count: number }[]>([]);
   const [sinalAmareloData, setSinalAmareloData] = React.useState<{ label: string, count: number }[]>([]);
+  const [fileCountData, setFileCountData] = React.useState<{ label: string, count: number }[]>([]);
 
   React.useEffect(() => {
     axios.get('http://localhost:3002/tab-prospeccao/count-empresas-consultor', {
@@ -136,6 +137,20 @@ const ChartDashBoard = () => {
       const data = response.data;
       setSinalAmareloData(data.map((item: { user: string, count: string }) => ({
         label: item.user,
+        count: parseInt(item.count, 10)
+      })));
+    }).catch(error => {
+      console.error(error);
+    });
+
+    axios.get('http://localhost:3002/tab-upload/count-files', {
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+      }
+    }).then(response => {
+      const data = response.data;
+      setFileCountData(data.map((item: { usuario: string, count: string }) => ({
+        label: item.usuario,
         count: parseInt(item.count, 10)
       })));
     }).catch(error => {
@@ -282,6 +297,29 @@ const ChartDashBoard = () => {
     }]
   };
 
+  const fileCountChartData = {
+    labels: fileCountData.map(item => item.label),
+    datasets: [{
+      label: 'File Counts',
+      data: fileCountData.map(item => item.count),
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        // ...additional colors if needed...
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        // ...additional colors if needed...
+      ],
+      borderWidth: 1
+    }]
+  };
+
   const options = {
     scales: {
       y: {
@@ -298,20 +336,21 @@ const ChartDashBoard = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%', marginLeft: '10%' }}>
         {data.length > 0 ? <Bar data={chartData} options={options} /> : 'Loading...'}
         {indicacaoData.length > 0 ? <Bar data={indicacaoChartData} options={options} /> : 'Loading...'}
         {parceriaData.length > 0 ? <Bar data={parceriaChartData} options={options} /> : 'Loading...'}
-        {bniData.length > 0 ? <Bar data={bniChartData} options={options} /> : 'Loading...'}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%', marginLeft: '10%' }}>
         {indicacaoConsultorData.length > 0 ? <Bar data={indicacaoConsultorChartData} options={options} /> : 'Loading...'}
         {indicacaoConsultorCountsData.length > 0 ? <Bar data={indicacaoConsultorCountsChartData} options={options} /> : 'Loading...'}
+        {bniData.length > 0 ? <Bar data={bniChartData} options={options} /> : 'Loading...'}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '15%' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '15%', marginLeft: '18%'}}>
         {bniCountsData.length > 0 ? <Pie data={bniCountsChartData} options={{ ...options, plugins: { title: { display: true, text: 'Clientes BNI' } } }} /> : 'Loading...'}
         {indicacaoCountsData.length > 0 ? <Pie data={indicacaoCountsChartData} options={{ ...options, plugins: { title: { display: true, text: 'Indicações' } } }} /> : 'Loading...'}
         {sinalAmareloData.length > 0 ? <Pie data={sinalAmareloChartData} options={{ ...options, plugins: { title: { display: true, text: 'Sinal Amarelo' } } }} /> : 'Loading...'}
+        {fileCountData.length > 0 ? <Pie data={fileCountChartData} options={{ ...options, plugins: { title: { display: true, text: 'Arquivos Desenvolvidos' } } }} /> : 'Loading...'}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%' }}>
       </div>
