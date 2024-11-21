@@ -287,6 +287,12 @@ const ChartDashBoard = () => {
       y: {
         beginAtZero: true
       }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: ''
+      }
     }
   };
 
@@ -303,9 +309,9 @@ const ChartDashBoard = () => {
         {indicacaoConsultorCountsData.length > 0 ? <Bar data={indicacaoConsultorCountsChartData} options={options} /> : 'Loading...'}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '15%' }}>
-        {bniCountsData.length > 0 ? <Pie data={bniCountsChartData} /> : 'Loading...'}
-        {indicacaoCountsData.length > 0 ? <Pie data={indicacaoCountsChartData}  /> : 'Loading...'}
-        {sinalAmareloData.length > 0 ? <Pie data={sinalAmareloChartData} /> : 'Loading...'}
+        {bniCountsData.length > 0 ? <Pie data={bniCountsChartData} options={{ ...options, plugins: { title: { display: true, text: 'Clientes BNI' } } }} /> : 'Loading...'}
+        {indicacaoCountsData.length > 0 ? <Pie data={indicacaoCountsChartData} options={{ ...options, plugins: { title: { display: true, text: 'Indicações' } } }} /> : 'Loading...'}
+        {sinalAmareloData.length > 0 ? <Pie data={sinalAmareloChartData} options={{ ...options, plugins: { title: { display: true, text: 'Sinal Amarelo' } } }} /> : 'Loading...'}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '25%' }}>
       </div>
