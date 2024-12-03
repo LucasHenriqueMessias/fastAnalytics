@@ -155,7 +155,6 @@ const Navbar = () => {
             Ferramentas Gerais
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/dashboard">Dashboard</a></li>
             <li><a className="dropdown-item" href="/ferramentas">Ferramentas dos Analistas</a></li>
             <li><a className="dropdown-item" href="/reuniao">Reuniões</a></li>
             

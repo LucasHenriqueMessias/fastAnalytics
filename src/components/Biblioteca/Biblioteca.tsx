@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button } from '@mui/material';
+import { Container, Typography, Button, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../LocalStorage/LocalStorage';
 import Dialog from '@mui/material/Dialog';
@@ -8,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CadastrarLivro from './CadastrarLivro';
+import { tokens } from '../../theme';
 
 interface Bibliotecas {
   id: number;
@@ -88,12 +89,19 @@ const Biblioteca = () => {
       width: 110
     }
   ];
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
         Biblioteca De Livros Fast Assessoria
       </Typography>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen} style={{ marginBottom: '16px' }}>
+      <Button
+        variant="contained"
+        style={{ backgroundColor: colors.lightBlue[900], marginBottom: '16px' }}
+        onClick={handleClickOpen}
+      >
         Cadastrar Novo Livro
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -108,7 +116,21 @@ const Biblioteca = () => {
         </DialogActions>
       </Dialog>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={BibliotecaData} columns={columns} autoPageSize />
+        <DataGrid rows={BibliotecaData} columns={columns} autoPageSize
+         sx={{
+          '& .MuiDataGrid-columnHeader': {
+            backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+          },
+          
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: colors.white[500], //Linhas da tabela
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+          }
+          
+        }}
+         />
       </div>
     </Container>
   );
