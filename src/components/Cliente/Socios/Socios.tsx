@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { tokens } from '../../../theme';
 
 interface SocioData {
   ID_Socio: number;
@@ -194,11 +195,13 @@ const Socios = () => {
     { field: 'relatorio_prospeccao', headerName: 'Relatório Prospecção', width: 150 },
     { field: 'opcao_pelo_mei', headerName: 'Opção pelo MEI', width: 150 },
   ];
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
 
   return (
     <div style={{ height: 600, width: '100%' }}>
       <h1>Sócios</h1>
-      <Button variant="contained" color="primary" onClick={handleAddSocio}>
+      <Button variant="contained" color="primary" onClick={handleAddSocio} style={{ marginBottom: '16px' }}>
         Cadastrar Sócio
       </Button>
       <Dialog open={showForm} onClose={handleCloseForm}>
@@ -373,6 +376,20 @@ const Socios = () => {
           return newRow;
         }}
         getRowId={(row) => row.id}
+
+        sx={{
+          '& .MuiDataGrid-columnHeader': {
+            backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+          },
+          
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: colors.white[500], //Linhas da tabela
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+          }
+          
+        }}
       />
     </div>
   );

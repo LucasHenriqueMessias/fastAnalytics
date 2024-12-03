@@ -2,7 +2,8 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
-import { Button, Container,  Typography } from '@mui/material';
+import { Button, Container,  Typography, useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 const ClientesFast = () => {
   const [rows, setRows] = useState<GridRowsProp>([]);
@@ -64,7 +65,9 @@ const ClientesFast = () => {
     { field: 'data_inicio_atividade', headerName: 'Data Início Atividade', flex: 1 },
     { field: 'descricao_situacao_cadastral', headerName: 'Descrição Situação Cadastral', flex: 1 },
   ];
-
+  
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
 
   return (
     <Container>
@@ -75,7 +78,21 @@ const ClientesFast = () => {
       Adicionar Novo Cliente
     </Button>
     <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-      <DataGrid rows={rows} columns={columns} autoPageSize />
+      <DataGrid rows={rows} columns={columns} autoPageSize
+      sx={{
+        '& .MuiDataGrid-columnHeader': {
+          backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+        },
+        
+        '& .MuiDataGrid-virtualScroller': {
+          backgroundColor: colors.white[500], //Linhas da tabela
+        },
+        '& .MuiDataGrid-footerContainer': {
+          backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+        }
+        
+      }}
+       />
     </div>
     </Container> 
   );

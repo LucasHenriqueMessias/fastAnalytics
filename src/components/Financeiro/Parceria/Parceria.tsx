@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { tokens } from '../../../theme';
 
 
 
@@ -25,7 +26,7 @@ const Parceria = () => {
     { field: 'parceiro', headerName: 'Parceiro', width: 150 },
     { field: 'justificativa', headerName: 'Justificativa', width: 250 },
     { field: 'status', headerName: 'Status', width: 150 },
-    { field: 'resultado', headerName: 'Resultado', width: 150 },
+    { field: 'resultado', headerName: 'Resultado', width: 180 },
   ];
 
   useEffect(() => {
@@ -73,6 +74,10 @@ const Parceria = () => {
     }
   };
 
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -82,7 +87,22 @@ const Parceria = () => {
         Adicionar Registro
       </Button>
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-        <DataGrid rows={parceriaData} columns={columns} autoPageSize />
+        <DataGrid rows={parceriaData} columns={columns} autoPageSize 
+        
+        sx={{
+          '& .MuiDataGrid-columnHeader': {
+            backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+          },
+          
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: colors.white[500], //Linhas da tabela
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+          }
+          
+        }}
+        />
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Registro</DialogTitle>

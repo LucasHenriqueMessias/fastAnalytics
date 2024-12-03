@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Checkbox, FormControlLabel, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { tokens } from '../../../theme';
 
 
 const Prospeccao = () => {
@@ -90,6 +91,10 @@ const Prospeccao = () => {
       console.error('Erro ao adicionar registro:', error);
     }
   };
+
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -99,7 +104,21 @@ const Prospeccao = () => {
         Adicionar Registro
       </Button>
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-        <DataGrid rows={prospeccaoData} columns={columns} autoPageSize />
+        <DataGrid rows={prospeccaoData} columns={columns} autoPageSize 
+        sx={{
+          '& .MuiDataGrid-columnHeader': {
+            backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+          },
+          
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: colors.white[500], //Linhas da tabela
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+          }
+          
+        }}
+        />
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Registro</DialogTitle>

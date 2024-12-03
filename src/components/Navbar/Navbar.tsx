@@ -11,16 +11,20 @@ O que foi modificado:
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getAccessToken, getUsername, removeAccessToken, removeUser } from '../LocalStorage/LocalStorage';
-import { IconButton, Link, useTheme } from '@mui/material';
+import { IconButton, Link, useTheme, Menu, MenuItem } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { ColorModeContext, tokens } from '../../theme';
 
 interface Notification {
   id: number;
-  message: string;
+  notification: string;
+    user: string;
+    author: string;
+    active: boolean;
 }
 
 const Navbar = () => {
@@ -36,7 +40,6 @@ const Navbar = () => {
     };
     const handleUserNotification = async () => {
       const user = getUsername();
-
       const token = getAccessToken();
       const response = await axios.get(`http://localhost:3002/tab-notificacao/user/${user}`, {
         headers: {
@@ -45,16 +48,39 @@ const Navbar = () => {
       });
 
       const notifications: Notification[] = response.data;
-      const notificationMessages = notifications.map((notification: Notification, index: number) => 
-        `Notificação ${index + 1}: ${JSON.stringify(notification)}`
-      ).join('\n\n\n\n\n\n');
-
-      alert(`Olá, ${user}, você tem ${notifications.length} notificações:\n\n${notificationMessages}`);
+      setNotifications(notifications);
     }
 
    const theme = useTheme();
    const colors = tokens(theme.palette.mode);
    const colorMode = useContext(ColorModeContext);
+
+   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const open = Boolean(anchorEl);
+   const [notifications, setNotifications] = React.useState<Notification[]>([]);
+
+   const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
+     setAnchorEl(event.currentTarget);
+     handleUserNotification();
+   };
+
+   const handleNotificationClose = () => {
+     setAnchorEl(null);
+   };
+
+   const handleRemoveNotification = (id: number) => {
+
+    const token = getAccessToken();
+    axios.patch(`http://localhost:3002/tab-notificacao/${id}`, {
+      active: false
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+     setNotifications((prevNotifications) => prevNotifications.filter(notification => notification.id !== id));
+   };
 
   return (
     <nav 
@@ -142,7 +168,7 @@ const Navbar = () => {
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === 'dark' ? (
             <DarkModeIcon/>
-          ):(
+          ):( 
             <LightModeIcon/>
           )
         
@@ -158,10 +184,26 @@ const Navbar = () => {
             height: '100%', 
             cursor: 'pointer' 
           }} 
-          onClick={handleUserNotification}
+          onClick={handleNotificationClick}
         >
           <NotificationsIcon />
         </div>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleNotificationClose}
+        >
+          {notifications.map((notification) => (
+            <MenuItem key={notification.id}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <span>{notification.notification}</span>
+                <IconButton onClick={() => handleRemoveNotification(notification.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            </MenuItem>
+          ))}
+        </Menu>
         <button className="btn btn-outline" type="submit" onClick={handleLogOut} style={{ backgroundColor: '#fff0' }} >Sair</button>
       </div>
     </div>

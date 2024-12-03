@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
-import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername } from '../LocalStorage/LocalStorage';
 
-const CadastrarFerramentas = () => {
+const CadastrarLivro = ({ onClose }: { onClose: () => void }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    tipoArquivo: 'xlsx',
+    tipoArquivo: 'Livro',
     usuario: '',
   });
   const [file, setFile] = useState<File | null>(null);
@@ -45,29 +45,28 @@ const CadastrarFerramentas = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      alert('Ferramenta cadastrada com sucesso!');
+      alert('Livro cadastrado com sucesso!');
+      onClose();
       window.location.reload(); // Refresh the page
     } catch (error) {
-      console.error('Erro ao cadastrar ferramenta:', error);
-      alert('Erro ao cadastrar ferramenta.');
+      console.error('Erro ao cadastrar livro:', error);
+      alert('Erro ao cadastrar livro.');
     }
   };
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Cadastro de Ferramentas desenvolvidas pelos analistas
-      </Typography>
+      
       <form noValidate autoComplete="off">
-      <label htmlFor="upload-file">
+        <label htmlFor="upload-file">
           <Button variant="contained" color="primary" component="span" style={{ marginTop: 20 }}>
-            Selecionar o Arquivo (Somente XLSX)
+            Selecionar o livro (Somente PDF)
           </Button>
         </label>
         <TextField
           margin="dense"
           name="name"
-          label="Nome da Ferramenta"
+          label="Nome do Livro"
           type="text"
           fullWidth
           value={formData.name}
@@ -83,7 +82,7 @@ const CadastrarFerramentas = () => {
           onChange={handleChange}
         />
         <input
-          accept=".xlsx"
+          accept=".pdf"
           style={{ display: 'none' }}
           id="upload-file"
           type="file"
@@ -99,4 +98,4 @@ const CadastrarFerramentas = () => {
   );
 };
 
-export default CadastrarFerramentas;
+export default CadastrarLivro;

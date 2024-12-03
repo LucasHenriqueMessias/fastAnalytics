@@ -6,11 +6,6 @@ import { Bar, Pie } from 'react-chartjs-2';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 
-type IndicacaoCount = {
-  indicacao_nome: string;
-  count: string;
-};
-
 type IndicacaoConsultorCount = {
   indicacao_nome: string;
   count: string;
@@ -163,7 +158,7 @@ const ChartDashBoard = () => {
   // console.log(indicacaoData);
   // console.log(parceriaData);
   // console.log(bniData);
-  console.log(indicacaoCountsData)
+  // console.log(indicacaoCountsData)
 
   const chartData = {
     labels: data.map(item => item.consultor_comercial),

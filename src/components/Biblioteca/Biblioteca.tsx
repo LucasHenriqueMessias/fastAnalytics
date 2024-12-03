@@ -3,8 +3,11 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Container, Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../LocalStorage/LocalStorage';
-
- 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import CadastrarLivro from './CadastrarLivro';
 
 interface Bibliotecas {
   id: number;
@@ -13,8 +16,19 @@ interface Bibliotecas {
   usuario: string;
 }
 
+
+
 const Biblioteca = () => {
   const [BibliotecaData, setBibliotecaData] = useState<Bibliotecas[]>([]);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -79,6 +93,20 @@ const Biblioteca = () => {
       <Typography variant="h4" gutterBottom>
         Biblioteca De Livros Fast Assessoria
       </Typography>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen} style={{ marginBottom: '16px' }}>
+        Cadastrar Novo Livro
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Cadastrar Novo Livro</DialogTitle>
+        <DialogContent>
+          <CadastrarLivro onClose={handleClose} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancelar
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={BibliotecaData} columns={columns} autoPageSize />
       </div>

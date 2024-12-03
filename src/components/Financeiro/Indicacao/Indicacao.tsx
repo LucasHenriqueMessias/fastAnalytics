@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { tokens } from '../../../theme';
 
 const Indicacao = () => {
   const [indicacaoData, setIndicacaoData] = useState([]);
@@ -26,7 +27,7 @@ const Indicacao = () => {
     { field: 'cnpj_cliente_indicado', headerName: 'CNPJ Cliente Indicado', width: 250 },
     { field: 'razao_social', headerName: 'Razão Social', width: 150 },
     { field: 'atuacao', headerName: 'Atuação', width: 150 },
-    { field: 'status', headerName: 'Status', width: 150 },
+    { field: 'status', headerName: 'Status', width: 180 },
   ];
 
   useEffect(() => {
@@ -100,6 +101,8 @@ const Indicacao = () => {
       console.error('Erro ao adicionar registro:', error);
     }
   };
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
 
   return (
     <Container>
@@ -111,7 +114,21 @@ const Indicacao = () => {
       </Button>
       <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center">
         <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-          <DataGrid rows={indicacaoData} columns={columns} autoPageSize />
+          <DataGrid rows={indicacaoData} columns={columns} autoPageSize
+           sx={{
+            '& .MuiDataGrid-columnHeader': {
+              backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+            },
+            
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.white[500], //Linhas da tabela
+            },
+            '& .MuiDataGrid-footerContainer': {
+              backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+            }
+            
+          }}
+          />
         </div>
         <div style={{ height: 400, width: '50%',  marginTop: 20 }}>
           <Bar data={chartData} />

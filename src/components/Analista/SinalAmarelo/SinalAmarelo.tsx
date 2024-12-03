@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme, IconButton, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
 import { tokens } from '../../../theme';
 
 const SinalAmarelo = () => {
   const [sinalAmareloData, setSinalAmareloData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [newRecord, setNewRecord] = useState({ usuario: '', cliente: '', status: '', data_criacao: '' });
+  const [newRecord, setNewRecord] = useState({ usuario: '', cliente: '', status: '' });
+  const [editOpen, setEditOpen] = useState(false);
+  const [editRecord, setEditRecord] = useState({ id: '', cliente: '', status: '', data_criacao: '' });
   const theme = useTheme(); //define o tema que será utilizado
   const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+
+  const handleStatusChange = (record: any) => {
+    setEditRecord(record);
+    setEditOpen(true);
+  };
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 100 },
@@ -20,8 +28,21 @@ const SinalAmarelo = () => {
     { 
       field: 'data_criacao', 
       headerName: 'Data de Criação', 
-      width: 180} 
-    
+      width: 180 
+    },
+    {
+      
+      field: 'alterar_status',
+      headerName: '',
+      width: 170,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <IconButton onClick={() => handleStatusChange(params.row)}>
+            <EditIcon />
+          </IconButton>
+        </div>
+      )
+    }
   ];
 
   useEffect(() => {
@@ -43,6 +64,7 @@ const SinalAmarelo = () => {
   };
 
   const handleClickOpen = () => {
+    setNewRecord({ ...newRecord, usuario: getUsername() || '' });
     setOpen(true);
   };
 
@@ -54,10 +76,16 @@ const SinalAmarelo = () => {
     setNewRecord({ ...newRecord, [e.target.name]: e.target.value });
   };
 
+  const handleNewRecordChange = (e: React.ChangeEvent<{ name?: string; value: unknown }> | SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    setNewRecord({ ...newRecord, [name as string]: value });
+  };
+
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/tab-sinal-amarelo', newRecord, {
+      const { usuario, cliente, status } = newRecord;
+      await axios.post('http://localhost:3002/tab-sinal-amarelo', { usuario, cliente, status }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -66,6 +94,30 @@ const SinalAmarelo = () => {
       handleClose();
     } catch (error) {
       console.error('Erro ao adicionar registro:', error);
+    }
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<{ name?: string; value: unknown }> | SelectChangeEvent<string>) => {
+      const { name, value } = e.target;
+      setEditRecord({ ...editRecord, [name as string]: value });
+    };
+
+  const handleEditSubmit = async () => {
+    try {
+      const token = getAccessToken();
+      await axios.patch(`http://localhost:3002/tab-sinal-amarelo/${editRecord.id}`, editRecord, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      fetchData();
+      handleEditClose();
+    } catch (error) {
+      console.error('Erro ao editar registro:', error);
     }
   };
 
@@ -99,31 +151,28 @@ const SinalAmarelo = () => {
           <TextField
             autoFocus
             margin="dense"
-            name="usuario"
-            label="Usuário"
-            type="text"
-            fullWidth
-            value={newRecord.usuario}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
             name="cliente"
             label="Cliente"
             type="text"
             fullWidth
             value={newRecord.cliente}
-            onChange={handleChange}
+            onChange={handleNewRecordChange}
           />
-          <TextField
+          <Select
             margin="dense"
             name="status"
             label="Status"
-            type="text"
             fullWidth
             value={newRecord.status}
-            onChange={handleChange}
-          />
+            onChange={handleNewRecordChange}
+            displayEmpty
+          >
+            <MenuItem value="" disabled>Status</MenuItem>
+            <MenuItem value="Sinal Verde">Sinal Verde</MenuItem>
+            <MenuItem value="Sinal Amarelo">Sinal Amarelo</MenuItem>
+            <MenuItem value="Sinal Vermelho">Sinal Vermelho</MenuItem>
+            <MenuItem value="Pendente">Pendente</MenuItem>
+          </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -131,6 +180,44 @@ const SinalAmarelo = () => {
           </Button>
           <Button onClick={handleSubmit} color="primary">
             Adicionar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={editOpen} onClose={handleEditClose}>
+        <DialogTitle>Editar Registro</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="cliente"
+            label="Cliente"
+            type="text"
+            fullWidth
+            value={editRecord.cliente}
+            onChange={handleEditChange}
+          />
+          <Select
+            margin="dense"
+            name="status"
+            label="Status"
+            fullWidth
+            value={editRecord.status}
+            onChange={handleEditChange}
+            displayEmpty
+          
+          >
+            <MenuItem value="Sinal Verde">Sinal Verde</MenuItem>
+            <MenuItem value="Sinal Amarelo">Sinal Amarelo</MenuItem>
+            <MenuItem value="Sinal Vermelho">Sinal Vermelho</MenuItem>
+            <MenuItem value="Pendente">Pendente</MenuItem>
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditClose} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleEditSubmit} color="primary">
+            Salvar
           </Button>
         </DialogActions>
       </Dialog>

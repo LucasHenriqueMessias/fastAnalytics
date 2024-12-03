@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { tokens } from '../../../theme';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend);
 
@@ -63,8 +64,9 @@ const Roi = () => {
     { field: 'mensalidade_roi', headerName: 'Mensalidade ROI', width: 150 },
     { field: 'ferias', headerName: 'Férias', width: 150 },
     { field: 'aumento_equipe', headerName: 'Aumento de Equipe', width: 150 },
-  ];
-
+  ]; 
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
   useEffect(() => {
     fetchData();
   }, []);
@@ -197,6 +199,19 @@ const Roi = () => {
           columns={columns}
           autoPageSize
           onFilterModelChange={handleFilterModelChange}
+          sx={{
+            '& .MuiDataGrid-columnHeader': {
+              backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+            },
+            
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.white[500], //Linhas da tabela
+            },
+            '& .MuiDataGrid-footerContainer': {
+              backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+            }
+            
+          }}
         />
       </div>
       <div style={{ height: 400, width: '50%', marginTop: 20, display: 'flex', justifyContent: 'space-between' }}>

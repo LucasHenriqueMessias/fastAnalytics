@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 interface FotografiaData {
   id: number;
@@ -140,10 +141,18 @@ const FotografiaCliente = () => {
     { field: 'pro_labore', headerName: 'Pro Labore', width: 150 },
   ];
 
+  const theme = useTheme(); //define o tema que será utilizado
+  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+
   return (
     <div style={{ height: 600, width: '100%' }}>
       <h1>Fotografia Cliente</h1>
-      <Button variant="contained" color="primary" onClick={handleAddFotografia}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAddFotografia}
+        style={{ marginBottom: '16px' }} // Adiciona margem inferior
+      >
         Cadastrar Fotografia
       </Button>
       <Dialog open={showForm} onClose={handleCloseForm}>
@@ -295,7 +304,21 @@ const FotografiaCliente = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <DataGrid rows={rows} columns={columns} autoPageSize />
+      <DataGrid rows={rows} columns={columns} autoPageSize
+      sx={{
+        '& .MuiDataGrid-columnHeader': {
+          backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
+        },
+        
+        '& .MuiDataGrid-virtualScroller': {
+          backgroundColor: colors.white[500], //Linhas da tabela
+        },
+        '& .MuiDataGrid-footerContainer': {
+          backgroundColor: colors.lightBlue[900], //Rodapé da tabela
+        }
+        
+      }}
+       />
     </div>
   );
 };
