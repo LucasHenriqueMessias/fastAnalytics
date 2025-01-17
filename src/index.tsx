@@ -40,6 +40,7 @@ import Contrato from './components/Contratos/Contratos';
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import {Theme} from '@mui/material/styles'; 
+import Eventos from './components/Eventos/Eventos';
 
 const AppWrapper = () => {
   const [theme, colorMode] = useMode() as [Theme, { toggleColorMode: () => "light" }];
@@ -154,6 +155,12 @@ const AppWrapper = () => {
                   <Contrato />
                 </PrivateRoute>
               } />
+              <Route path="/Eventos" element={
+                <PrivateRoute>
+                  <Eventos />
+                  </PrivateRoute>
+                } 
+              />
             </Routes>
           </Router>
         </React.StrictMode>

@@ -72,9 +72,7 @@ const SinalAmarelo = () => {
     setOpen(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRecord({ ...newRecord, [e.target.name]: e.target.value });
-  };
+
 
   const handleNewRecordChange = (e: React.ChangeEvent<{ name?: string; value: unknown }> | SelectChangeEvent<string>) => {
     const { name, value } = e.target;

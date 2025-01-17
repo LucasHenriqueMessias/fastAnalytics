@@ -1,0 +1,42 @@
+.cadastrar-cliente {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.input-group .MuiTextField-root {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.input-group .MuiButton-root {
+  padding: 10px 20px;
+}
+
+.data-section {
+  margin-top: 20px;
+}
+
+.data-display {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.button-group .MuiButton-root {
+  padding: 10px 20px;
+}

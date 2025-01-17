@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
-import { Line, Bar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { tokens } from '../../../theme';
 

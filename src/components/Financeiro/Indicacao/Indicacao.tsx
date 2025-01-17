@@ -12,7 +12,6 @@ const Indicacao = () => {
   const [open, setOpen] = useState(false);
   const [newRecord, setNewRecord] = useState({
     usuario: '',
-    data_criacao: '',
     cnpj_cliente_indicado: '',
     razao_social: '',
     atuacao: '',

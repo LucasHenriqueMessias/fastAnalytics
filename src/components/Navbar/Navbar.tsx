@@ -160,6 +160,7 @@ const Navbar = () => {
             
             <li><a className="dropdown-item" href="/contrato">Contratos</a></li>
             <li><a className="dropdown-item" href="/biblioteca">Biblioteca</a></li>
+            <li><a className="dropdown-item" href="/eventos">Eventos</a></li>
           </ul>
         </li>
       </ul>

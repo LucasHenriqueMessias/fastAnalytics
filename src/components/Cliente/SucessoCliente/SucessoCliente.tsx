@@ -112,23 +112,23 @@ const SucessoCliente = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     { field: 'cnpjCliente', headerName: 'CNPJ Cliente', width: 150 },
-    { field: 'sucesso', headerName: 'Sucesso', width: 150 },
+    { field: 'sucesso', headerName: 'Descrição', width: 150 },
     { field: 'feedbackPosVenda', headerName: 'Feedback Pós-Venda', width: 200 },
     { field: 'feedbackNegocio', headerName: 'Feedback Negócio', width: 200 },
     { field: 'feedbackProduto', headerName: 'Feedback Produto', width: 200 },
     { field: 'NpsFast', headerName: 'NPS Fast', width: 150 },
     { field: 'LtvConsultor', headerName: 'LTV Consultor', width: 150 },
     { field: 'usuario', headerName: 'Usuário', width: 150 },
-    { field: 'data', headerName: 'Data', width: 150 },
-    { field: 'dataContato', headerName: 'Data Contato', width: 150 },
-    { field: 'dataUltimoContato', headerName: 'Data Último Contato', width: 150 },
-    { field: 'dataProximoContato', headerName: 'Data Próximo Contato', width: 150 },
+    { field: 'data', headerName: 'Criado', width: 150 },
+    { field: 'dataContato', headerName: 'Primeiro Contato', width: 150 },
+    { field: 'dataUltimoContato', headerName: 'Último Contato', width: 150 },
+    { field: 'dataProximoContato', headerName: 'Próximo Contato', width: 150 },
   ];
   const theme = useTheme(); //define o tema que será utilizado
   const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
 
   return (
-    <div style={{ height: 600, width: '100%' }}>
+    <div style={{ height: 600, width: '80%', margin: '0 auto' }}> {/* Adicionado margin: '0 auto' */}
       <h1>Sucesso Cliente</h1>
       <Button
         variant="contained"
@@ -151,7 +151,7 @@ const SucessoCliente = () => {
           />
           <TextField
             margin="dense"
-            label="Sucesso"
+            label="Descrição"
             type="number"
             fullWidth
             value={newSucesso.sucesso}
@@ -207,7 +207,7 @@ const SucessoCliente = () => {
           />
           <TextField
             margin="dense"
-            label="Data"
+            label="Criado"
             type="date"
             fullWidth
             value={newSucesso.data.toISOString().split('T')[0]}
@@ -215,7 +215,7 @@ const SucessoCliente = () => {
           />
           <TextField
             margin="dense"
-            label="Data Contato"
+            label="Primeiro Contato"
             type="date"
             fullWidth
             value={newSucesso.dataContato.toISOString().split('T')[0]}
@@ -223,7 +223,7 @@ const SucessoCliente = () => {
           />
           <TextField
             margin="dense"
-            label="Data Último Contato"
+            label="Último Contato"
             type="date"
             fullWidth
             value={newSucesso.dataUltimoContato.toISOString().split('T')[0]}
@@ -231,7 +231,7 @@ const SucessoCliente = () => {
           />
           <TextField
             margin="dense"
-            label="Data Próximo Contato"
+            label="Próximo Contato"
             type="date"
             fullWidth
             value={newSucesso.dataProximoContato.toISOString().split('T')[0]}
@@ -247,6 +247,7 @@ const SucessoCliente = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <div style={{ height: 400, width: '80%', marginTop: 20, margin: '0 auto' }}> {/* Adicionado margin: '0 auto' */}
       <DataGrid rows={rows} columns={columns} autoPageSize
       sx={{
         '& .MuiDataGrid-columnHeader': {
@@ -262,6 +263,7 @@ const SucessoCliente = () => {
         
       }}
        />
+       </div>
     </div>
   );
 };

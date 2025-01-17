@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Container, Typography } from '@mui/material';
+import './CadastrarCliente.css'; // Import the CSS file for styling
 
 interface Cnae {
   code: string;
@@ -36,35 +37,9 @@ interface Qsa {
 
 const CadastrarCliente = () => {
   const [data, setData] = useState<any>(null);
-  const [cnaesSecundarios, setCnaesSecundarios] = useState<Cnae[]>([]);
-  const [qsa, setQsa] = useState<Qsa[]>([]);
   const [cnpj, setCnpj] = useState<string>('');
-  // const [newSocio, setNewSocio] = useState<Qsa>({
-  //   ID_Socio: 0,
-  //   cnpj_empresa: '',
-  //   pais: null,
-  //   nome_socio: '',
-  //   codigo_pais: null,
-  //   faixa_etaria: '',
-  //   cnpj_cpf_do_socio: '',
-  //   qualificacao_socio: '',
-  //   codigo_faixa_etaria: 0,
-  //   data_entrada_sociedade: new Date(),
-  //   identificador_de_socio: 0,
-  //   cpf_representante_legal: '',
-  //   nome_representante_legal: '',
-  //   codigo_qualificacao_socio: 0,
-  //   qualificacao_representante_legal: '',
-  //   codigo_qualificacao_representante_legal: 0,
-  //   disc: '',
-  //   serdip: '',
-  //   eneagrama: '',
-  //   hobbies: '',
-  //   relatorio_prospeccao: '',
-  //   opcao_pelo_mei: false,
-  // });
-  const [editSocio, setEditSocio] = useState<Qsa | null>(null);
-  // const [newCnae, setNewCnae] = useState<Cnae>({ code: '', description: '' });
+  const [editData, setEditData] = useState<any>(null);
+  const [isEditClicked, setIsEditClicked] = useState<boolean>(false);
 
   const handleFetchData = () => {
     axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`)
@@ -80,13 +55,37 @@ const CadastrarCliente = () => {
           data_entrada_sociedade: new Date(socio.data_entrada_sociedade),
         }));
         setData(rest);
-        setCnaesSecundarios(cnaesSecundariosComCnpj);
-        setQsa(qsaComCnpjEmpresa);
+        handleSubmitCnaes(cnaesSecundariosComCnpj);
+        handleSubmitQsa(qsaComCnpjEmpresa);
       })
       .catch((error) => {
         console.error(error);
         alert('CNPJ não encontrado. Por favor, verifique o número e tente novamente.');
       });
+  };
+
+  const handleEditData = () => {
+    setEditData(data);
+    setIsEditClicked(true);
+  };
+
+  const handleSaveEditData = () => {
+    if (editData) {
+      setData(editData);
+      setEditData(null);
+      setIsEditClicked(false);
+    }
+  };
+
+  const handleChangeEditData = (field: string, value: any) => {
+    if (editData) {
+      setEditData({ ...editData, [field]: value });
+    }
+  };
+
+  const handleCloseEditData = () => {
+    setEditData(null);
+    setIsEditClicked(false);
   };
 
   const handleSubmitData = () => {
@@ -99,11 +98,25 @@ const CadastrarCliente = () => {
     axios.post('http://localhost:3002/loja', data, config)
       .then(() => console.log('Dados gerais enviados com sucesso'))
       .catch((error) => console.error('Erro ao enviar dados gerais:', error));
+  };
+
+  const handleSubmitCnaes = (cnaes: Cnae[]) => {
+    const token = getAccessToken();
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
 
     // Enviar CNAEs Secundários
-    axios.post('http://localhost:3002/tab-cnae-secundario', cnaesSecundarios, config)
+    axios.post('http://localhost:3002/tab-cnae-secundario', cnaes, config)
       .then(() => console.log('CNAEs Secundários enviados com sucesso'))
       .catch((error) => console.error('Erro ao enviar CNAEs Secundários:', error));
+  };
+
+  const handleSubmitQsa = (qsa: Qsa[]) => {
+    const token = getAccessToken();
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
 
     // Enviar QSA
     axios.post('http://localhost:3002/tab-socios', qsa, config)
@@ -111,257 +124,359 @@ const CadastrarCliente = () => {
       .catch((error) => console.error('Erro ao enviar QSA:', error));
   };
 
-  // const handleAddSocio = () => {
-  //   setQsa([...qsa, newSocio]);
-  //   setNewSocio({
-  //     ID_Socio: 0,
-  //     cnpj_empresa: '',
-  //     pais: null,
-  //     nome_socio: '',
-  //     codigo_pais: null,
-  //     faixa_etaria: '',
-  //     cnpj_cpf_do_socio: '',
-  //     qualificacao_socio: '',
-  //     codigo_faixa_etaria: 0,
-  //     data_entrada_sociedade: new Date(),
-  //     identificador_de_socio: 0,
-  //     cpf_representante_legal: '',
-  //     nome_representante_legal: '',
-  //     codigo_qualificacao_socio: 0,
-  //     qualificacao_representante_legal: '',
-  //     codigo_qualificacao_representante_legal: 0,
-  //     disc: '',
-  //     serdip: '',
-  //     eneagrama: '',
-  //     hobbies: '',
-  //     relatorio_prospeccao: '',
-  //     opcao_pelo_mei: false,
-  //   });
-  // };
-
-  // const handleAddCnae = () => {
-  //   setCnaesSecundarios([...cnaesSecundarios, newCnae]);
-  //   setNewCnae({ code: '', description: '' });
-  // };
-
-  const handleEditSocio = (index: number) => {
-    const socio = qsa[index];
-    setEditSocio({
-      ...socio,
-      data_entrada_sociedade: new Date(socio.data_entrada_sociedade),
-    });
-  };
-
-  const handleSaveEditSocio = () => {
-    if (editSocio) {
-      const updatedQsa = qsa.map((socio) => (socio.ID_Socio === editSocio.ID_Socio ? editSocio : socio));
-      setQsa(updatedQsa);
-      setEditSocio(null);
-    }
-  };
-
-  const handleChangeEditSocio = (field: string, value: string | number | boolean | null | Date) => {
-    if (editSocio) {
-      setEditSocio({ ...editSocio, [field]: value });
-    }
-  };
-
-  const handleCloseEditSocio = () => {
-    setEditSocio(null);
-  };
-
   return (
-    <div>
-      <h1>Cadastrar Cliente</h1>
-      <div>
-        <input
-          type="text"
+    <Container className="cadastrar-cliente">
+      <Typography variant="h4" gutterBottom>
+        Cadastrar Cliente
+      </Typography>
+      <div className="input-group">
+        <TextField
+          label="Digite o CNPJ"
+          variant="outlined"
           value={cnpj}
           onChange={(e) => setCnpj(e.target.value)}
-          placeholder="Digite o CNPJ"
+          fullWidth
         />
-        <button onClick={handleFetchData}>Buscar Cliente</button>
+        <Button variant="contained" color="primary" onClick={handleFetchData}>
+          Buscar Cliente
+        </Button>
       </div>
       {data ? (
-        <div>
-          <h2>Dados Gerais</h2>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-          <button onClick={handleSubmitData}>Enviar Dados Gerais</button>
-          <h2>CNAEs Secundários</h2>
-          <pre>{JSON.stringify(cnaesSecundarios, null, 2)}</pre>
-          <button onClick={handleSubmitData}>Enviar CNAEs Secundários</button>
-          <h2>QSA</h2>
-          <pre>{JSON.stringify(qsa, null, 2)}</pre>
-          <button onClick={handleSubmitData}>Enviar QSA</button>
-          {qsa.map((socio, index) => (
-            <div key={index}>
-              <button onClick={() => handleEditSocio(index)}>Editar Sócio</button>
-            </div>
-          ))}
+        <div className="data-section">
+          <Typography variant="h6">Dados Gerais</Typography>
+          <pre className="data-display">{JSON.stringify(data, null, 2)}</pre>
+          <div className="button-group">
+            <Button variant="contained" color="primary" onClick={handleEditData} style={{ marginRight: '10px' }}>
+              Editar
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleSubmitData} disabled={!isEditClicked}>
+              Enviar
+            </Button>
+          </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Typography variant="body1">Loading...</Typography>
       )}
-      <Dialog open={!!editSocio} onClose={handleCloseEditSocio}>
-        <DialogTitle>Editar Sócio</DialogTitle>
+      <Dialog open={!!editData} onClose={handleCloseEditData}>
+        <DialogTitle>Editar Dados Gerais</DialogTitle>
         <DialogContent>
-          {editSocio && (
+          {editData && (
             <>
               <TextField
                 margin="dense"
-                label="Nome do Sócio"
-                type="text"
+                label="Email"
+                type="email"
                 fullWidth
-                value={editSocio.nome_socio}
-                onChange={(e) => handleChangeEditSocio('nome_socio', e.target.value)}
+                value={editData.email}
+                onChange={(e) => handleChangeEditData('email', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="CNPJ/CPF do Sócio"
+                label="UF"
                 type="text"
                 fullWidth
-                value={editSocio.cnpj_cpf_do_socio}
-                onChange={(e) => handleChangeEditSocio('cnpj_cpf_do_socio', e.target.value)}
+                value={editData.uf}
+                onChange={(e) => handleChangeEditData('uf', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="Qualificação do Sócio"
-                type="text"
-                fullWidth
-                value={editSocio.qualificacao_socio}
-                onChange={(e) => handleChangeEditSocio('qualificacao_socio', e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Faixa Etária"
-                type="text"
-                fullWidth
-                value={editSocio.faixa_etaria}
-                onChange={(e) => handleChangeEditSocio('faixa_etaria', e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Código Faixa Etária"
+                label="CEP"
                 type="number"
                 fullWidth
-                value={editSocio.codigo_faixa_etaria}
-                onChange={(e) => handleChangeEditSocio('codigo_faixa_etaria', Number(e.target.value))}
+                value={editData.cep}
+                onChange={(e) => handleChangeEditData('cep', Number(e.target.value))}
               />
               <TextField
                 margin="dense"
-                label="Data Entrada Sociedade"
-                type="date"
+                label="CNPJ"
+                type="text"
                 fullWidth
-                value={editSocio.data_entrada_sociedade.toISOString().split('T')[0]}
-                onChange={(e) => handleChangeEditSocio('data_entrada_sociedade', new Date(e.target.value))}
+                value={editData.cnpj}
+                onChange={(e) => handleChangeEditData('cnpj', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="Identificador de Sócio"
+                label="Porte"
+                type="text"
+                fullWidth
+                value={editData.porte}
+                onChange={(e) => handleChangeEditData('porte', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Bairro"
+                type="text"
+                fullWidth
+                value={editData.bairro}
+                onChange={(e) => handleChangeEditData('bairro', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Número"
+                type="text"
+                fullWidth
+                value={editData.numero}
+                onChange={(e) => handleChangeEditData('numero', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Município"
+                type="text"
+                fullWidth
+                value={editData.municipio}
+                onChange={(e) => handleChangeEditData('municipio', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Logradouro"
+                type="text"
+                fullWidth
+                value={editData.logradouro}
+                onChange={(e) => handleChangeEditData('logradouro', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="CNAE Fiscal"
                 type="number"
                 fullWidth
-                value={editSocio.identificador_de_socio}
-                onChange={(e) => handleChangeEditSocio('identificador_de_socio', Number(e.target.value))}
+                value={editData.cnae_fiscal}
+                onChange={(e) => handleChangeEditData('cnae_fiscal', Number(e.target.value))}
               />
               <TextField
                 margin="dense"
-                label="CPF Representante Legal"
+                label="Complemento"
                 type="text"
                 fullWidth
-                value={editSocio.cpf_representante_legal}
-                onChange={(e) => handleChangeEditSocio('cpf_representante_legal', e.target.value)}
+                value={editData.complemento}
+                onChange={(e) => handleChangeEditData('complemento', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="Nome Representante Legal"
+                label="Razão Social"
                 type="text"
                 fullWidth
-                value={editSocio.nome_representante_legal}
-                onChange={(e) => handleChangeEditSocio('nome_representante_legal', e.target.value)}
+                value={editData.razao_social}
+                onChange={(e) => handleChangeEditData('razao_social', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="Código Qualificação Sócio"
+                label="Nome Fantasia"
+                type="text"
+                fullWidth
+                value={editData.nome_fantasia}
+                onChange={(e) => handleChangeEditData('nome_fantasia', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Capital Social"
                 type="number"
                 fullWidth
-                value={editSocio.codigo_qualificacao_socio}
-                onChange={(e) => handleChangeEditSocio('codigo_qualificacao_socio', Number(e.target.value))}
+                value={editData.capital_social}
+                onChange={(e) => handleChangeEditData('capital_social', Number(e.target.value))}
               />
               <TextField
                 margin="dense"
-                label="Qualificação Representante Legal"
+                label="DDD Telefone 1"
                 type="text"
                 fullWidth
-                value={editSocio.qualificacao_representante_legal}
-                onChange={(e) => handleChangeEditSocio('qualificacao_representante_legal', e.target.value)}
+                value={editData.ddd_telefone_1}
+                onChange={(e) => handleChangeEditData('ddd_telefone_1', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="Código Qualificação Representante Legal"
-                type="number"
-                fullWidth
-                value={editSocio.codigo_qualificacao_representante_legal}
-                onChange={(e) => handleChangeEditSocio('codigo_qualificacao_representante_legal', Number(e.target.value))}
-              />
-              <TextField
-                margin="dense"
-                label="DISC"
+                label="DDD Telefone 2"
                 type="text"
                 fullWidth
-                value={editSocio.disc}
-                onChange={(e) => handleChangeEditSocio('disc', e.target.value)}
+                value={editData.ddd_telefone_2}
+                onChange={(e) => handleChangeEditData('ddd_telefone_2', e.target.value)}
               />
               <TextField
                 margin="dense"
-                label="SERDIP"
+                label="Natureza Jurídica"
                 type="text"
                 fullWidth
-                value={editSocio.serdip}
-                onChange={(e) => handleChangeEditSocio('serdip', e.target.value)}
+                value={editData.natureza_juridica}
+                onChange={(e) => handleChangeEditData('natureza_juridica', e.target.value)}
               />
-              <TextField
-                margin="dense"
-                label="Eneagrama"
-                type="text"
-                fullWidth
-                value={editSocio.eneagrama}
-                onChange={(e) => handleChangeEditSocio('eneagrama', e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Hobbies"
-                type="text"
-                fullWidth
-                value={editSocio.hobbies}
-                onChange={(e) => handleChangeEditSocio('hobbies', e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Relatório Prospecção"
-                type="text"
-                fullWidth
-                value={editSocio.relatorio_prospeccao}
-                onChange={(e) => handleChangeEditSocio('relatorio_prospeccao', e.target.value)}
-              />
-              <label>Opção pelo MEI</label>
+              <label>Opção pelo Simples</label>
               <input
                 type="checkbox"
-                checked={editSocio.opcao_pelo_mei}
-                onChange={(e) => handleChangeEditSocio('opcao_pelo_mei', e.target.checked)}
+                checked={editData.opcao_pelo_simples}
+                onChange={(e) => handleChangeEditData('opcao_pelo_simples', e.target.checked)}
+              />
+              <TextField
+                margin="dense"
+                label="CNAE Fiscal Descrição"
+                type="text"
+                fullWidth
+                value={editData.cnae_fiscal_descricao}
+                onChange={(e) => handleChangeEditData('cnae_fiscal_descricao', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Data Situação Cadastral"
+                type="date"
+                fullWidth
+                value={editData.data_situacao_cadastral}
+                onChange={(e) => handleChangeEditData('data_situacao_cadastral', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Descrição Situação Cadastral"
+                type="text"
+                fullWidth
+                value={editData.descricao_situacao_cadastral}
+                onChange={(e) => handleChangeEditData('descricao_situacao_cadastral', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Descrição Identificador Matriz/Filial"
+                type="text"
+                fullWidth
+                value={editData.descricao_identificador_matriz_filial}
+                onChange={(e) => handleChangeEditData('descricao_identificador_matriz_filial', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Renda Bruta Inicial"
+                type="number"
+                fullWidth
+                value={editData.renda_bruta_inicial}
+                onChange={(e) => handleChangeEditData('renda_bruta_inicial', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Renda Bruta Atual"
+                type="number"
+                fullWidth
+                value={editData.renda_bruta_atual}
+                onChange={(e) => handleChangeEditData('renda_bruta_atual', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Renda Líquida Inicial"
+                type="number"
+                fullWidth
+                value={editData.renda_liquida_inicial}
+                onChange={(e) => handleChangeEditData('renda_liquida_inicial', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Renda Líquida Atual"
+                type="number"
+                fullWidth
+                value={editData.renda_liquida_atual}
+                onChange={(e) => handleChangeEditData('renda_liquida_atual', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Número de Funcionários"
+                type="number"
+                fullWidth
+                value={editData.numero_funcionarios}
+                onChange={(e) => handleChangeEditData('numero_funcionarios', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Valor Faturamento"
+                type="number"
+                fullWidth
+                value={editData.valor_faturamento}
+                onChange={(e) => handleChangeEditData('valor_faturamento', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Valor Faturamento Inicial"
+                type="number"
+                fullWidth
+                value={editData.valor_faturamento_inicial}
+                onChange={(e) => handleChangeEditData('valor_faturamento_inicial', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Ponto de Apoio"
+                type="text"
+                fullWidth
+                value={editData.ponto_apoio}
+                onChange={(e) => handleChangeEditData('ponto_apoio', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Perfil"
+                type="text"
+                fullWidth
+                value={editData.perfil}
+                onChange={(e) => handleChangeEditData('perfil', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Área de Atuação"
+                type="text"
+                fullWidth
+                value={editData.area_atuacao}
+                onChange={(e) => handleChangeEditData('area_atuacao', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Segmento"
+                type="text"
+                fullWidth
+                value={editData.segmento}
+                onChange={(e) => handleChangeEditData('segmento', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Número de Reuniões"
+                type="number"
+                fullWidth
+                value={editData.numero_reunioes}
+                onChange={(e) => handleChangeEditData('numero_reunioes', Number(e.target.value))}
+              />
+              <TextField
+                margin="dense"
+                label="Status"
+                type="text"
+                fullWidth
+                value={editData.status}
+                onChange={(e) => handleChangeEditData('status', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Data Contratação Fast"
+                type="date"
+                fullWidth
+                value={editData.data_contratacao_fast}
+                onChange={(e) => handleChangeEditData('data_contratacao_fast', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Data Saída Fast"
+                type="date"
+                fullWidth
+                value={editData.data_saida_fast}
+                onChange={(e) => handleChangeEditData('data_saida_fast', e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Nome Ponte"
+                type="text"
+                fullWidth
+                value={editData.nome_ponte}
+                onChange={(e) => handleChangeEditData('nome_ponte', e.target.value)}
               />
             </>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditSocio} color="primary">
+          <Button onClick={handleCloseEditData} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleSaveEditSocio} color="primary">
+          <Button onClick={handleSaveEditData} color="primary">
             Salvar
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Container>
   );
 };
 
