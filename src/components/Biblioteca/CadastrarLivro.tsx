@@ -39,7 +39,7 @@ const CadastrarLivro = ({ onClose }: { onClose: () => void }) => {
         formDataToSend.append('file', file);
       }
 
-      await axios.post('http://localhost:3002/tab-upload/file', formDataToSend, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-upload/file`, formDataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

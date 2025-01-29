@@ -35,7 +35,7 @@ const Dre = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3002/tab-dre', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-dre`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -69,7 +69,7 @@ const Dre = () => {
 
   const handleSubmitDre = async () => {
     try {
-      const response = await axios.post('http://localhost:3002/tab-dre', newDre, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/tab-dre`, newDre, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

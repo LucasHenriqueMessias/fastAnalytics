@@ -25,7 +25,7 @@ const Ferramentas = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-upload/file/tipo/xlsx', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-upload/file/tipo/xlsx`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -40,7 +40,7 @@ const Ferramentas = () => {
   const handleDownload = async (id: number) => {
     const ferramenta = ferramentasData.find((f: any) => f.id === id);
     if (ferramenta) {
-      const response = await fetch(`http://localhost:3002/tab-upload/file/download/${ferramenta.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/tab-upload/file/download/${ferramenta.id}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`
         }

@@ -43,7 +43,7 @@ const Login: React.FC = () => {
         } else {
             setUsername(user);
             try {
-                const response = await axios.post('http://localhost:3002/auth/login', {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
                     user,
                     password
                 });

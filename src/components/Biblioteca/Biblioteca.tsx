@@ -38,7 +38,7 @@ const Biblioteca = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-upload/file/tipo/Livro', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-upload/file/tipo/Livro`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -53,7 +53,7 @@ const Biblioteca = () => {
   const handleDownload = async (id: number) => {
     const bibliotecas = BibliotecaData.find((f: any) => f.id === id);
     if (bibliotecas) {
-      const response = await fetch(`http://localhost:3002/tab-upload/file/download/${bibliotecas.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/tab-upload/file/download/${bibliotecas.id}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`
         }

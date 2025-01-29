@@ -40,6 +40,7 @@ const CadastrarCliente = () => {
   const [cnpj, setCnpj] = useState<string>('');
   const [editData, setEditData] = useState<any>(null);
   const [isEditClicked, setIsEditClicked] = useState<boolean>(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleFetchData = () => {
     axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`)
@@ -95,7 +96,7 @@ const CadastrarCliente = () => {
     };
 
     // Enviar dados gerais
-    axios.post('http://localhost:3002/loja', data, config)
+    axios.post(`${apiUrl}/loja`, data, config)
       .then(() => console.log('Dados gerais enviados com sucesso'))
       .catch((error) => console.error('Erro ao enviar dados gerais:', error));
   };
@@ -107,7 +108,7 @@ const CadastrarCliente = () => {
     };
 
     // Enviar CNAEs Secundários
-    axios.post('http://localhost:3002/tab-cnae-secundario', cnaes, config)
+    axios.post(`${apiUrl}/tab-cnae-secundario`, cnaes, config)
       .then(() => console.log('CNAEs Secundários enviados com sucesso'))
       .catch((error) => console.error('Erro ao enviar CNAEs Secundários:', error));
   };
@@ -119,7 +120,7 @@ const CadastrarCliente = () => {
     };
 
     // Enviar QSA
-    axios.post('http://localhost:3002/tab-socios', qsa, config)
+    axios.post(`${apiUrl}/tab-socios`, qsa, config)
       .then(() => console.log('QSA enviado com sucesso'))
       .catch((error) => console.error('Erro ao enviar QSA:', error));
   };

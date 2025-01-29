@@ -37,7 +37,7 @@ const Indicacao = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-indicacao-cliente', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-indicacao-cliente`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -51,7 +51,7 @@ const Indicacao = () => {
   const fetchChartData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-indicacao-cliente/count-segmento', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-indicacao-cliente/count-segmento`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -89,7 +89,7 @@ const Indicacao = () => {
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/tab-indicacao-cliente', newRecord, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-indicacao-cliente`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

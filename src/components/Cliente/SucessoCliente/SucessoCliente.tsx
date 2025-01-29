@@ -48,7 +48,7 @@ const SucessoCliente = () => {
       };
 
       try {
-        const response = await axios.get('http://localhost:3002/tab-sucesso-cliente', config);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-sucesso-cliente`, config);
         const data = response.data.map((item: SucessoData) => ({
           ...item,
           data: new Date(item.data).toLocaleDateString(),
@@ -81,7 +81,7 @@ const SucessoCliente = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3002/sucesso', newSucesso, config);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/sucesso`, newSucesso, config);
       setRows([...rows, { id: response.data.id, ...response.data }]);
       setShowForm(false);
       setNewSucesso({

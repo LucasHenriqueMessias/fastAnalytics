@@ -17,7 +17,7 @@ const ClientesFast = () => {
       };
 
       try {
-        const response = await axios.get('http://localhost:3002/loja', config);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/loja`, config);
         const data = response.data.map((item: any, index: number) => ({
           id: index + 1,
           uf: item.uf,

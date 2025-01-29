@@ -25,7 +25,7 @@ const ChartDashBoard = () => {
   const [fileCountData, setFileCountData] = React.useState<{ label: string, count: number }[]>([]);
 
   React.useEffect(() => {
-    axios.get('http://localhost:3002/tab-prospeccao/count-empresas-consultor', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/count-empresas-consultor`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -35,7 +35,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-indicacao-cliente/count-indicacao-usuario', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-indicacao-cliente/count-indicacao-usuario`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -45,7 +45,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-parceria-fast/count-parceria-usuario', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-parceria-fast/count-parceria-usuario`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -55,7 +55,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-prospeccao/consultor-bni-true', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/consultor-bni-true`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -65,7 +65,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-prospeccao/consultor-indicacao-true', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/consultor-indicacao-true`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -75,7 +75,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-prospeccao/bni-counts', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/bni-counts`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -89,7 +89,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-prospeccao/indicacao-counts', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/indicacao-counts`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -107,7 +107,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-prospeccao/indicacao-consultor', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao/indicacao-consultor`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -124,7 +124,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-sinal-amarelo/sinal-amarelo-pendente', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-sinal-amarelo/sinal-amarelo-pendente`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -138,7 +138,7 @@ const ChartDashBoard = () => {
       console.error(error);
     });
 
-    axios.get('http://localhost:3002/tab-upload/count-files', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-upload/count-files`, {
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }

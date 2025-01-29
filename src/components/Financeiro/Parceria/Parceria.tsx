@@ -36,7 +36,7 @@ const Parceria = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-parceria-fast', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-parceria-fast`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -62,7 +62,7 @@ const Parceria = () => {
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/tab-parceria-fast', newRecord, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-parceria-fast`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

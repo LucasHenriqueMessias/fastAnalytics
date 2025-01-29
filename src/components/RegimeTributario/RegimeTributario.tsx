@@ -13,7 +13,7 @@ const RegimeTributario = () => {
       headers: { Authorization: `Bearer ${getAccessToken()}` }
     };
 
-    axios.get('http://localhost:3002/tab-regime-tributario', config)
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-regime-tributario`, config)
       .then((response) => {
         const data = response.data.map((item: any, index: number) => ({
           id: item.id,

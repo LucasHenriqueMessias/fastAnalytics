@@ -24,13 +24,13 @@ const Contrato = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-upload/file/tipo/Contrato ', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-upload/file/tipo/Contrato`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setContratoData(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
@@ -39,7 +39,7 @@ const Contrato = () => {
   const handleDownload = async (id: number) => {
     const Contratos = ContratoData.find((f: any) => f.id === id);
     if (Contratos) {
-      const response = await fetch(`http://localhost:3002/tab-upload/file/download/${Contratos.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/tab-upload/file/download/${Contratos.id}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`
         }

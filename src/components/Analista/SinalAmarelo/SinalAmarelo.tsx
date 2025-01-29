@@ -52,7 +52,7 @@ const SinalAmarelo = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-sinal-amarelo', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-sinal-amarelo`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -83,7 +83,7 @@ const SinalAmarelo = () => {
     try {
       const token = getAccessToken();
       const { usuario, cliente, status } = newRecord;
-      await axios.post('http://localhost:3002/tab-sinal-amarelo', { usuario, cliente, status }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-sinal-amarelo`, { usuario, cliente, status }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -107,7 +107,7 @@ const SinalAmarelo = () => {
   const handleEditSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.patch(`http://localhost:3002/tab-sinal-amarelo/${editRecord.id}`, editRecord, {
+      await axios.patch(`${process.env.REACT_APP_API_URL}/tab-sinal-amarelo/${editRecord.id}`, editRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

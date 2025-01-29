@@ -22,7 +22,7 @@ const Eventos = () => {
 
   useEffect(() => {
     const token = getAccessToken()
-    axios.get('http://localhost:3002/tab-evento', {
+    axios.get(`${process.env.REACT_APP_API_URL}/tab-evento`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -53,7 +53,7 @@ const Eventos = () => {
 
   const handleSubmit = () => {
     const token = getAccessToken()
-    axios.post('http://localhost:3002/tab-evento', newEvento, {
+    axios.post(`${process.env.REACT_APP_API_URL}/tab-evento`, newEvento, {
       headers: {
         Authorization: `Bearer ${token}`
       }

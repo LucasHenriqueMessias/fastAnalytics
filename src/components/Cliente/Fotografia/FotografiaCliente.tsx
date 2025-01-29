@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
+import { getAccessToken } from '../../LocalStorage/LocalStorage';
 
 interface FotografiaData {
   id: number;
@@ -52,7 +53,12 @@ const FotografiaCliente = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3002/Fotografia');
+        const token = getAccessToken();
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-fotografia-cliente`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         const data = response.data.map((item: FotografiaData) => ({
           id: item.id,
           usuario: item.usuario,
@@ -92,7 +98,12 @@ const FotografiaCliente = () => {
 
   const handleSubmitFotografia = async () => {
     try {
-      const response = await axios.post('http://localhost:3002/Fotografia', newFotografia);
+      const token = getAccessToken();
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/tab-fotografia-clienet`, newFotografia, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setRows([...rows, response.data]);
       setShowForm(false);
       setNewFotografia({

@@ -67,7 +67,7 @@ const Socios = () => {
       };
 
       try {
-        const response = await axios.get('http://localhost:3002/tab-socios', config);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-socios`, config);
         const data = response.data.map((item: SocioData) => ({
           id: item.ID_Socio,
           ...item,
@@ -97,7 +97,7 @@ const Socios = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3002/tab-socios', newSocio, config);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/tab-socios`, newSocio, config);
       setRows([...rows, { id: response.data.ID_Socio, ...response.data }]);
       setShowForm(false);
       setNewSocio({

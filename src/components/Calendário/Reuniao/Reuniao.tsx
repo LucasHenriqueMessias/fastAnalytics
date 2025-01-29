@@ -44,7 +44,7 @@ const Reuniao = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-reuniao', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-reuniao`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ const Reuniao = () => {
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/tab-reuniao', newRecord, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-reuniao`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

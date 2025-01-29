@@ -53,7 +53,7 @@ const Prospeccao = () => {
   const fetchData = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-prospeccao', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-prospeccao`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ const Prospeccao = () => {
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/tab-prospeccao', newRecord, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/tab-prospeccao`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

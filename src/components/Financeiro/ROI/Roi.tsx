@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
 import axios from 'axios';
@@ -47,6 +47,7 @@ const Roi = () => {
     aumento_equipe: ''
   });
   const [filteredData, setFilteredData] = useState<RoiData[]>([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -67,18 +68,11 @@ const Roi = () => {
   ]; 
   const theme = useTheme(); //define o tema que será utilizado
   const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    setFilteredData(roiData);
-  }, [roiData]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.get('http://localhost:3002/tab-roi', {
+      const response = await axios.get(`${apiUrl}/tab-roi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -88,7 +82,15 @@ const Roi = () => {
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
-  };
+  }, [apiUrl]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    setFilteredData(roiData);
+  }, [roiData]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -105,7 +107,7 @@ const Roi = () => {
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
-      await axios.post('http://localhost:3002/roi', newRecord, {
+      await axios.post(`${apiUrl}/roi`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
         }

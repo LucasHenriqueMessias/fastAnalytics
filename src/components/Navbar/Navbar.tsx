@@ -41,7 +41,7 @@ const Navbar = () => {
     const handleUserNotification = async () => {
       const user = getUsername();
       const token = getAccessToken();
-      const response = await axios.get(`http://localhost:3002/tab-notificacao/user/${user}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-notificacao/user/${user}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -71,7 +71,7 @@ const Navbar = () => {
    const handleRemoveNotification = (id: number) => {
 
     const token = getAccessToken();
-    axios.patch(`http://localhost:3002/tab-notificacao/${id}`, {
+    axios.patch(`${process.env.REACT_APP_API_URL}/tab-notificacao/${id}`, {
       active: false
     }, {
       headers: {
