@@ -3,20 +3,21 @@ Autor: Lucas Henrique Messias Gonçalves
 Data de Criação: 23/10/2024
 Descrição: Este arquivo contém o componente Navbar, que é o responsável por renderizar a barra de navegação da aplicação.
 
-
-Última Modificação: Contratos e Regime Tributário Removido
-O que foi modificado: 
+TO DO:
+- Remover Analista
+- Remover Cliente
+- Remover Ferramentas Gerais
+- Incluir Dossiê
 */
 
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { getAccessToken, getDepartment, getUsername, removeAccessToken, removeUser, getNivel } from '../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername, removeAccessToken, removeUser } from '../LocalStorage/LocalStorage';
 import { IconButton, Link, useTheme, Menu, MenuItem } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { ColorModeContext, tokens } from '../../theme';
 
@@ -37,24 +38,17 @@ const Navbar = () => {
 
       alert('Você foi desconectado.');
 
-      setAnchorElUser(null); // Close the user menu
       navigate('/login'); // Redirect to login page
     };
     const handleUserNotification = async () => {
-      const username = getUsername();
-      if (!username) {
-        console.error("Username is null or undefined.");
-        return;
-      }
-      const user = username.replace(/\./g, '%2C'); // Sanitize user by replacing '.' with '%2C'
+      const user = getUsername();
       const token = getAccessToken();
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-notificacao/user/${user}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/tab-notificacao/user/Goncalves`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
-      console.log(`${process.env.REACT_APP_API_URL}/tab-notificacao/user/${user}`)
       const notifications: Notification[] = response.data;
       setNotifications(notifications);
     }
@@ -90,38 +84,6 @@ const Navbar = () => {
      setNotifications((prevNotifications) => prevNotifications.filter(notification => notification.id !== id));
    };
 
-   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-   const openUserMenu = Boolean(anchorElUser);
-
-   const handleUserClick = (event: React.MouseEvent<HTMLElement>) => {
-     setAnchorElUser(event.currentTarget);
-   };
-
-   const handleUserClose = () => {
-     setAnchorElUser(null);
-   };
-
-  const calculateLevel = (exp: number) => {
-    return Math.floor(exp / 600);
-  };
-
-  const calculateNextLevelExp = useCallback((exp: number) => {
-    const currentLevel = calculateLevel(exp);
-    return (currentLevel + 1) * 600;
-  }, []);
-
-  const user = getUsername();
-  const department = getDepartment();
-  const level = Number(getNivel());
-  const [calculatedLevel, setCalculatedLevel] = useState<number>(calculateLevel(level));
-  const [nextLevelExp, setNextLevelExp] = useState<number>(calculateNextLevelExp(level));
-
-  useEffect(() => {
-    const updatedLevel = Number(getNivel());
-    setCalculatedLevel(calculateLevel(updatedLevel));
-    setNextLevelExp(calculateNextLevelExp(updatedLevel));
-  }, [level, department, calculateNextLevelExp]);
-
   return (
     <nav 
       className="navbar navbar-expand-lg navbar-light" 
@@ -153,6 +115,7 @@ const Navbar = () => {
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Parceria">Parceria</a></li>
+            <li><a className="dropdown-item" href="/contrato">Contratos</a></li>
           </ul>
         </li>
         <li className="nav-item dropdown">
@@ -175,7 +138,7 @@ const Navbar = () => {
         </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Gestão
+            Operacional
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Tarefas">Tarefas</a></li>
@@ -197,12 +160,13 @@ const Navbar = () => {
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item " href="/clientes">Clientes Fast</a></li>
             <li><a className="dropdown-item" href="/cadastro-cliente">Cadastrar Cliente</a></li>
-            <li><a className="dropdown-item" href="/cadastro">Cadastro</a></li>
+            <li><a className="dropdown-item" href="/regime-tributario">Regime Tributário</a></li>
             <li><a className="dropdown-item" href="/dre">Dre</a></li>
             <li><a className="dropdown-item" href="/fotografia-cliente">Fotografia</a></li>
             <li><a className="dropdown-item" href="/dores-cliente">Dores</a></li>
             <li><a className="dropdown-item" href="/socios">Sócios</a></li>
             <li><a className="dropdown-item " href="/sucesso-cliente">Sucesso do Cliente</a></li>
+            <li><a className="dropdown-item disabled" href="/">Dossiê</a></li>
           </ul>
         </li>
         <li className="nav-item dropdown">
@@ -226,7 +190,7 @@ const Navbar = () => {
           </ul>
         </li>
       </ul>
-      <div className="d-flex align-items-center ms-auto">
+      <div className="d-flex align-items-center">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === 'dark' ? (
             <DarkModeIcon/>
@@ -266,41 +230,7 @@ const Navbar = () => {
             </MenuItem>
           ))}
         </Menu>
-        <div 
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%', 
-            cursor: 'pointer',
-            marginLeft: '10px'
-          }}
-          onClick={handleUserClick}
-        >
-          <PersonIcon />
-        </div>
-        <Menu
-          anchorEl={anchorElUser}
-          open={openUserMenu}
-          onClose={handleUserClose}
-        >
-          <MenuItem>
-          <PersonIcon/>
-            <div style={{ fontWeight: 'bold' }}>{user}</div>
-          </MenuItem>
-          <MenuItem>
-            <div style={{ color: 'gray' }}>{department}</div>
-          </MenuItem>
-          <MenuItem>
-            <div style={{ color: 'blue' }}>exp total: {level } / {nextLevelExp}</div>
-          </MenuItem>
-          <MenuItem>
-            <div style={{ color: 'green' }}>nível: {calculatedLevel}</div>
-          </MenuItem>
-          <MenuItem onClick={handleLogOut}>
-            Sair
-          </MenuItem>
-        </Menu>
+        <button className="btn btn-outline" type="submit" onClick={handleLogOut} style={{ backgroundColor: '#fff0' }} >Sair</button>
       </div>
     </div>
   </div>

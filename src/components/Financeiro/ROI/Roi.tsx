@@ -52,7 +52,7 @@ const Roi = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     { field: 'cnpj', headerName: 'CNPJ', width: 150 },
-    { field: 'usuario', headerName: 'Usuário', width: 150 },
+    { field: 'usuario', headerName: 'Consultor', width: 150 },
     { field: 'data_criacao', headerName: 'Data de Criação', width: 180},
     { field: 'maquina_cartao', headerName: 'Máquina de Cartão', width: 150 },
     { field: 'emprestimos_financiamentos', headerName: 'Empréstimos/Financiamentos', width: 150 },
@@ -190,8 +190,10 @@ const Roi = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Dados de Retorno Sobre o Investimento
+        Nps Interno
       </Typography>
+      <a href='a'>Apresenta a avaliação de desempenho do cliente por parte do consultor.</a>
+      <br />
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>

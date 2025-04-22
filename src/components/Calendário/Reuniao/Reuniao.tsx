@@ -19,10 +19,9 @@ const Reuniao = () => {
     data_marcada: '',
     data_realizada: '',
     data_criacao: '',
-    caminho: '',
     nps_reuniao: ''
   });
-
+//removido o caminho da reunião
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     { field: 'user', headerName: 'Usuário', width: 150 },
@@ -32,8 +31,7 @@ const Reuniao = () => {
     { field: 'local_reuniao', headerName: 'Local da Reunião', width: 150 },
     { field: 'Ata_reuniao', headerName: 'Ata da Reunião', width: 150 },
     { field: 'data_marcada', headerName: 'Data Marcada', width: 180 },
-    { field: 'data_realizada', headerName: 'Data Realizada', width: 180 },
-    { field: 'caminho', headerName: 'Caminho', width: 150 },
+    { field: 'data_realizada', headerName: 'Data Realizada', width: 150 },
     { field: 'nps_reuniao', headerName: 'NPS', width: 150, type: 'number' },
   ];
 
@@ -88,8 +86,10 @@ const Reuniao = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Dados de Reunião
+        Tarefas
       </Typography>
+      <a href=' '> Atividades dos colaboradoes para com os clientes</a>
+      <br />
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>
@@ -190,15 +190,6 @@ const Reuniao = () => {
             InputLabelProps={{
               shrink: true,
             }}
-          />
-          <TextField
-            margin="dense"
-            name="caminho"
-            label="Caminho"
-            type="text"
-            fullWidth
-            value={newRecord.caminho}
-            onChange={handleChange}
           />
           <TextField
             margin="dense"

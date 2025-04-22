@@ -133,7 +133,7 @@ const FotografiaCliente = () => {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'usuario', headerName: 'Usuário', width: 150 },
+    { field: 'usuario', headerName: 'Consultor', width: 150 },
     { field: 'cnpj', headerName: 'CNPJ', width: 150 },
     { field: 'data_criacao', headerName: 'Data Criação', width: 150 },
     { field: 'ferramentas', headerName: 'Ferramentas', width: 150 },

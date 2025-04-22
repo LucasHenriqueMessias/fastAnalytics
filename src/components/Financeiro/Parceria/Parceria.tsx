@@ -81,8 +81,10 @@ const Parceria = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Dados de Parceria
+        Parceria
       </Typography>
+      <a href=' '> Parceiros que fazem parte do Ecossistema Fast</a>
+      <br></br>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>

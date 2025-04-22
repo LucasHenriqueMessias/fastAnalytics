@@ -9,15 +9,27 @@ Caso o usuário não esteja autenticado, ele é redirecionado para a página de 
 
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { getAccessToken } from '../LocalStorage/LocalStorage';
+import { getAccessToken, getDepartment } from '../LocalStorage/LocalStorage';
 
-interface PrivateRouteProps {
-    children: JSX.Element;
-}
+type PrivateRouteProps = {
+  children: React.ReactNode;
+  allowedDepartments: string[];
+};
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-    const token = getAccessToken();
-    return token ? children : <Navigate to="/login" />;
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedDepartments }) => {
+  const token = getAccessToken();
+  const department = getDepartment();
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!allowedDepartments.includes(department || '')) {
+    alert('Você não tem permissão para acessar essa página.');
+    return <Navigate to="/home" />;
+  }
+
+  return <>{children}</>;
 };
 
 export default PrivateRoute;

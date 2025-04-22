@@ -41,6 +41,12 @@ import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import {Theme} from '@mui/material/styles'; 
 import Eventos from './components/Eventos/Eventos';
+import HelpDesk from './components/HelpDesk/HelpDesk';
+import AcompanharChamado from './components/HelpDesk/AcompanharChamado';
+import NovoChamado from './components/HelpDesk/NovoChamado';
+import NewUser from './components/Login/NewUser';
+import PasswordReset from './components/Login/PasswordReset';
+import Cadastro from './components/Cliente/Cadastro/Cadastro';
 
 const AppWrapper = () => {
   const [theme, colorMode] = useMode() as [Theme, { toggleColorMode: () => "light" }];
@@ -55,112 +61,137 @@ const AppWrapper = () => {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/home" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'Comercial', 'Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <ChartDashBoard />
                 </PrivateRoute>
               } />
               <Route path="*" element={<Navigate to="/login" />} />
               <Route path="/dre" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Dre />
                 </PrivateRoute>
               } />
               <Route path="/cadastro-cliente" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'Diretor', 'Gestor', 'Consultor', 'developer']}>
                   <CadastrarCliente />
                 </PrivateRoute>
               } />
               <Route path="/clientes" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <ClientesFast />
                 </PrivateRoute>
               } />
               <Route path="regime-tributario" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <RegimeTributario />
                 </PrivateRoute>
               } />
               <Route path="fotografia-cliente" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <FotografiaCliente />
                 </PrivateRoute>
               } />
               <Route path="/dores-cliente" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <DoresCliente />
                 </PrivateRoute>
               } />
               <Route path="/socios" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Socios />
                 </PrivateRoute>
               } />
               <Route path="/sucesso-cliente" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <SucessoCliente />
                 </PrivateRoute>
               } />
               <Route path="/sinal-amarelo" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <SinalAmarelo />
                 </PrivateRoute>
               } />
               <Route path="/ferramentas" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Ferramentas />
                 </PrivateRoute>
               } />
               <Route path="/cadastrar-ferramentas" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <CadastrarFerramentas />
                 </PrivateRoute>
               } />
               <Route path="/Prospeccao" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Prospeccao />
                 </PrivateRoute>
               } />
-              <Route path="/reuniao" element={
-                <PrivateRoute>
+              <Route path="/Tarefas" element={
+                <PrivateRoute allowedDepartments={['Operacional', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Reuniao />
                 </PrivateRoute>
               } />
-              <Route path="/roi" element={
-                <PrivateRoute>
+              <Route path="/NpsInterno" element={
+                <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Roi />
                 </PrivateRoute>
               } />
               <Route path="/indicacao" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Indicacao />
                 </PrivateRoute>
               } />
               <Route path="/parceria" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Parceria />
                 </PrivateRoute>
               } />
               <Route path="/dashboard" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'Comercial', 'Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <ChartDashBoard />
                 </PrivateRoute>
               } />
               <Route path="/biblioteca" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Biblioteca />
                 </PrivateRoute>
               } />
               <Route path="/contrato" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Contrato />
                 </PrivateRoute>
               } />
               <Route path="/Eventos" element={
-                <PrivateRoute>
+                <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Eventos />
-                  </PrivateRoute>
-                } 
-              />
+                </PrivateRoute>
+              } />
+              <Route path="/HelpDesk" element={
+                <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
+                  <HelpDesk />
+                </PrivateRoute>
+              } />
+              <Route path="/HelpDesk/AcompanharChamados" element={
+                <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
+                  <AcompanharChamado />
+                </PrivateRoute>
+              } />
+              <Route path="/HelpDesk/NovoChamado" element={
+                <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
+                  <NovoChamado />
+                </PrivateRoute>
+              } />
+              <Route path="/admin/NewUser" element={
+                <PrivateRoute allowedDepartments={['developer']}>
+                  <NewUser/>
+                </PrivateRoute>
+              }/>
+              <Route path="/Esqueci-Minha-Senha" element={
+                  <PasswordReset/>
+              }/>
+              <Route path="/cadastro" element={
+                  <Cadastro/>
+              }/>
             </Routes>
           </Router>
         </React.StrictMode>

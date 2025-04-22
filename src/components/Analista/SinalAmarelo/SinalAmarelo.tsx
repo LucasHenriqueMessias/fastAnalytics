@@ -22,7 +22,7 @@ const SinalAmarelo = () => {
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'usuario', headerName: 'Usuário', width: 200 },
+    { field: 'usuario', headerName: 'Analista', width: 200 },
     { field: 'cliente', headerName: 'Cliente', width: 250 },
     { field: 'status', headerName: 'Status', width: 250 },
     { 

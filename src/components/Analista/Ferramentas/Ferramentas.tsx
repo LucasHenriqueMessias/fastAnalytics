@@ -64,8 +64,8 @@ const Ferramentas = () => {
   };
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Nome da Ferramenta', flex: 1 },
-    { field: 'description', headerName: 'Descrição da Ferramenta', flex: 1 },
-    { field: 'usuario', headerName: 'Desenvolvedor da Ferramenta', flex: 1 },
+    { field: 'description', headerName: 'Descrição', flex: 1 },
+    { field: 'usuario', headerName: 'Analista Responsável', flex: 1 },
     {
       field: 'download',
       headerName: '',

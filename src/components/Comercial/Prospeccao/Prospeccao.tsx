@@ -21,8 +21,6 @@ const Prospeccao = () => {
     email: '',
     indicacao: false,
     indicacao_nome: '',
-    bni: false,
-    parceiro_bni_grupo: ''
   });
 
   const columns: GridColDef[] = [
@@ -42,8 +40,6 @@ const Prospeccao = () => {
     { field: 'email', headerName: 'Email', width: 150 },
     { field: 'indicacao', headerName: 'Indicação', width: 150, type: 'boolean' },
     { field: 'indicacao_nome', headerName: 'Nome da Indicação', width: 150 },
-    { field: 'bni', headerName: 'BNI', width: 150, type: 'boolean' },
-    { field: 'parceiro_bni_grupo', headerName: 'Grupo BNI', width: 150 },
   ];
 
   useEffect(() => {
@@ -224,25 +220,6 @@ const Prospeccao = () => {
             type="text"
             fullWidth
             value={newRecord.indicacao_nome}
-            onChange={handleChange}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newRecord.bni}
-                onChange={handleChange}
-                name="bni"
-              />
-            }
-            label="BNI"
-          />
-          <TextField
-            margin="dense"
-            name="parceiro_bni_grupo"
-            label="Grupo BNI"
-            type="text"
-            fullWidth
-            value={newRecord.parceiro_bni_grupo}
             onChange={handleChange}
           />
         </DialogContent>

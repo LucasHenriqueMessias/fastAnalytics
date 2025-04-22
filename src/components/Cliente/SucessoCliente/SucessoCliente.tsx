@@ -118,7 +118,7 @@ const SucessoCliente = () => {
     { field: 'feedbackProduto', headerName: 'Feedback Produto', width: 200 },
     { field: 'NpsFast', headerName: 'NPS Fast', width: 150 },
     { field: 'LtvConsultor', headerName: 'LTV Consultor', width: 150 },
-    { field: 'usuario', headerName: 'Usuário', width: 150 },
+    { field: 'usuario', headerName: 'Consultor Comercial', width: 150 },
     { field: 'data', headerName: 'Criado', width: 150 },
     { field: 'dataContato', headerName: 'Primeiro Contato', width: 150 },
     { field: 'dataUltimoContato', headerName: 'Último Contato', width: 150 },

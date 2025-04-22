@@ -14,13 +14,17 @@ Melhorias Futuras: inclua um popup de Declaração de ciência a acessibilidade 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { setAccessToken, setUsername } from '../LocalStorage/LocalStorage';
+import { setAccessToken, setUsername, setDepartment, setNivel } from '../LocalStorage/LocalStorage';
 import background from '../../assets/login4.jpg';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
 
     useEffect(() => {
         // Hide the navbar when the login component is mounted
@@ -50,6 +54,19 @@ const Login: React.FC = () => {
                 const { access_token } = response.data;
                 
                 setAccessToken(access_token);
+
+                const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/login/get/user/${user}`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                });
+
+                const { department, nivel } = userResponse.data;
+                setDepartment(department);
+                setNivel(nivel);
+
+            
+
                 alert('Login bem-sucedido!');
                 navigate('/home'); // Redirect to home page
             } catch (error) {
@@ -78,14 +95,23 @@ const Login: React.FC = () => {
                         style={{ marginBottom: '10px' }}
                     />
                     <label htmlFor="password" style={{color: 'black'}}>Senha:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{ marginBottom: '20px' }}
-                    />
+                    <div style={{ position: 'relative', width: '58%' }}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            style={{ marginBottom: '20px', width: '100%', paddingRight: '30px' }}
+                        />
+                        <span
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{ position: 'absolute', right: '10px',  cursor: 'pointer' }}
+                        >
+                            {showPassword ? <VisibilityIcon style={{ color: 'black' }} /> : <VisibilityOffIcon style={{ color: 'black' }} />}
+                        </span>
+                    </div>
                     <button type="submit" style={{borderRadius: '15px'}}>Entrar</button>
+                    <a href="/Esqueci-Minha-Senha" style={{ textDecoration: 'none', marginTop: '10px'}}>Esqueci a senha</a>
                 </form>
             </div>
         </div>

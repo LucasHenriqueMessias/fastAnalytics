@@ -39,3 +39,22 @@ export const getUsername = (): string | null => {
 export const removeUser = (): void => {
     localStorage.removeItem('user');
 }
+
+
+// Function to get the department from localStorage
+export const getDepartment = (): string | null => {
+    return localStorage.getItem('department');
+}
+
+// Function to set the department in localStorage
+export const setDepartment = (department: string): void => {
+    localStorage.setItem('department', department);
+}
+
+export const getNivel = (): string | null => {
+    return localStorage.getItem('nivel');
+}
+
+export const setNivel = (nivel: string): void => {
+    localStorage.setItem('nivel', nivel);
+}

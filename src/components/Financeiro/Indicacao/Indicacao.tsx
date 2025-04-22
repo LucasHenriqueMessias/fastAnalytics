@@ -106,8 +106,10 @@ const Indicacao = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Dados de Indicação
+        Indicação
       </Typography>
+      <a href=' '>Empresas Indicadas por colaboradores Fast</a>
+      <br></br>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>
