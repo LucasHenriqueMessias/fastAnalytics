@@ -21,6 +21,7 @@ const Prospeccao = () => {
     email: '',
     indicacao: false,
     indicacao_nome: '',
+    status: '',
   });
 
   const columns: GridColDef[] = [
@@ -40,6 +41,7 @@ const Prospeccao = () => {
     { field: 'email', headerName: 'Email', width: 150 },
     { field: 'indicacao', headerName: 'Indicação', width: 150, type: 'boolean' },
     { field: 'indicacao_nome', headerName: 'Nome da Indicação', width: 150 },
+    { field: 'status', headerName: 'Status', width: 150 },
   ];
 
   useEffect(() => {
@@ -201,6 +203,15 @@ const Prospeccao = () => {
             type="email"
             fullWidth
             value={newRecord.email}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="status"
+            label="Status"
+            type="text"
+            fullWidth
+            value={newRecord.status}
             onChange={handleChange}
           />
           <FormControlLabel

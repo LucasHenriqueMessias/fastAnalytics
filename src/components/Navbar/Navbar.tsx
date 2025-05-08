@@ -149,7 +149,7 @@ const Navbar = () => {
         
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Financeiro
+            Operacional
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Parceria">Parceria</a></li>
@@ -162,23 +162,18 @@ const Navbar = () => {
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Indicacao">Indicação</a></li>
             <li><a className="dropdown-item" href="/prospeccao">Prospecção</a></li>
+            <li><a className="dropdown-item" href="/NPSInterno">Nps Interno</a></li>
+            <li><a className="dropdown-item" href="/Overdelivery">OverDelivery</a></li>  
           </ul>
         </li>
         
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Costumer Services
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/NPSInterno">Nps Interno</a></li>
-          </ul>
-        </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gestão
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Tarefas">Tarefas</a></li>
+            <li><a className="dropdown-item" href="/sinal-amarelo">Sinal Amarelo</a></li>
           </ul>
         </li>
         <li className="nav-item dropdown">
@@ -187,7 +182,6 @@ const Navbar = () => {
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/cadastrar-ferramentas">Cadastrar Ferramentas</a></li>
-            <li><a className="dropdown-item" href="/sinal-amarelo">Sinal Amarelo</a></li>
           </ul>
         </li>
         <li className="nav-item dropdown">
@@ -196,7 +190,7 @@ const Navbar = () => {
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item " href="/clientes">Clientes Fast</a></li>
-            <li><a className="dropdown-item" href="/cadastro-cliente">Cadastrar Cliente</a></li>
+            {/* <li><a className="dropdown-item" href="/cadastro-cliente">Cadastrar Cliente</a></li> */}
             <li><a className="dropdown-item" href="/cadastro">Cadastro</a></li>
             <li><a className="dropdown-item" href="/dre">Dre</a></li>
             <li><a className="dropdown-item" href="/fotografia-cliente">Fotografia</a></li>

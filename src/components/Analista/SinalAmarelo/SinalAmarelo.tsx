@@ -21,15 +21,15 @@ const SinalAmarelo = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'usuario', headerName: 'Analista', width: 200 },
-    { field: 'cliente', headerName: 'Cliente', width: 250 },
-    { field: 'status', headerName: 'Status', width: 250 },
     { 
       field: 'data_criacao', 
       headerName: 'Data de Criação', 
       width: 180 
     },
+    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'usuario', headerName: 'Analista', width: 200 },
+    { field: 'cliente', headerName: 'Cliente', width: 250 },
+    { field: 'status', headerName: 'Status', width: 250 },
     {
       
       field: 'alterar_status',

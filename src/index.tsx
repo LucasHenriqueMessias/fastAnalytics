@@ -47,6 +47,7 @@ import NovoChamado from './components/HelpDesk/NovoChamado';
 import NewUser from './components/Login/NewUser';
 import PasswordReset from './components/Login/PasswordReset';
 import Cadastro from './components/Cliente/Cadastro/Cadastro';
+import HardSkills from './components/Financeiro/NpsHardSkills/HardSkills';
 
 const AppWrapper = () => {
   const [theme, colorMode] = useMode() as [Theme, { toggleColorMode: () => "light" }];
@@ -131,7 +132,7 @@ const AppWrapper = () => {
                   <Reuniao />
                 </PrivateRoute>
               } />
-              <Route path="/NpsInterno" element={
+              <Route path="/OverDelivery" element={
                 <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Roi />
                 </PrivateRoute>
@@ -192,6 +193,11 @@ const AppWrapper = () => {
               <Route path="/cadastro" element={
                   <Cadastro/>
               }/>
+              <Route path="/NpsInterno" element={
+                <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
+                  <HardSkills />
+                </PrivateRoute>
+              } />
             </Routes>
           </Router>
         </React.StrictMode>

@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
 
 interface FotografiaData {
   id: number;
@@ -89,6 +89,11 @@ const FotografiaCliente = () => {
   }, []);
 
   const handleAddFotografia = () => {
+    const username = getUsername(); // Obtém o nome do usuário
+    setNewFotografia({
+      ...newFotografia,
+      usuario: username ?? '', // Define o valor do usuário automaticamente, com fallback para string vazia
+    });
     setShowForm(true);
   };
 
@@ -176,6 +181,7 @@ const FotografiaCliente = () => {
             fullWidth
             value={newFotografia.usuario}
             onChange={(e) => setNewFotografia({ ...newFotografia, usuario: e.target.value })}
+            disabled
           />
           <TextField
             margin="dense"

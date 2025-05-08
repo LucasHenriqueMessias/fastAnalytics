@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
 
 interface DoresData {
   id: number;
@@ -89,6 +89,11 @@ const DoresCliente = () => {
   }, []);
 
   const handleAddDores = () => {
+    const username = getUsername(); // Obtém o nome do usuário
+  setNewDores({
+    ...newDores,
+    consultor: username ?? '',
+  });
     setShowForm(true);
   };
 
@@ -166,19 +171,21 @@ const DoresCliente = () => {
         <DialogContent>
           <TextField
             margin="dense"
-            label="Cliente"
-            type="text"
-            fullWidth
-            value={newDores.cliente}
-            onChange={(e) => setNewDores({ ...newDores, cliente: e.target.value })}
-          />
-          <TextField
-            margin="dense"
             label="Consultor"
             type="text"
             fullWidth
             value={newDores.consultor}
             onChange={(e) => setNewDores({ ...newDores, consultor: e.target.value })}
+            disabled
+          />
+          <TextField
+            margin="dense"
+            label="Cliente"
+            type="text"
+            fullWidth
+            value={newDores.cliente}
+            onChange={(e) => setNewDores({ ...newDores, cliente: e.target.value })}
+           
           />
           <TextField
             margin="dense"

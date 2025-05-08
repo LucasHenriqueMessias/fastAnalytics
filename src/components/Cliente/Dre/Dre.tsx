@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem, useTheme } from '@mui/material';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
 import { tokens } from '../../../theme';
 
@@ -31,6 +31,22 @@ const Dre = () => {
   });
 
   const token = getAccessToken(); // Replace with your actual token
+
+  // Opções disponíveis para o campo "Descrição"
+  const descricaoOptions = [
+    'Receita Bruta',
+    'Deduções da Receita',
+    'Receita Líquida',
+    'Custo dos Produtos Vendidos',
+    'Lucro Bruto',
+    'Despesas Operacionais',
+    'Resultado Operacional',
+    'Receitas Financeiras',
+    'Despesas Financeiras',
+    'Resultado Antes dos Impostos',
+    'Impostos',
+    'Lucro Líquido',
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,14 +136,22 @@ const Dre = () => {
             value={newDre.Data.toISOString().split('T')[0]}
             onChange={(e) => setNewDre({ ...newDre, Data: new Date(e.target.value) })}
           />
-          <TextField
+          <Select
             margin="dense"
-            label="Descrição"
-            type="text"
             fullWidth
             value={newDre.Descricao}
             onChange={(e) => setNewDre({ ...newDre, Descricao: e.target.value })}
-          />
+            displayEmpty
+          >
+            <MenuItem value="" disabled>
+              Selecione uma Descrição
+            </MenuItem>
+            {descricaoOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
           <TextField
             margin="dense"
             label="Valor"
