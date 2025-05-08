@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
+import { Container, Typography, Button, TextField, useTheme } from '@mui/material';
 import axios from 'axios';
 import { getAccessToken } from '../../LocalStorage/LocalStorage';
-import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { tokens } from '../../../theme';
 
@@ -26,18 +25,6 @@ const Roi = () => {
   const [roiData, setRoiData] = useState<RoiData[]>([]);
   const [filteredData, setFilteredData] = useState<RoiData[]>([]); // Para os dados filtrados
   const [filterUsuario, setFilterUsuario] = useState(''); // Para armazenar o filtro por usuário
-  const [open, setOpen] = useState(false);
-  const [newRecord, setNewRecord] = useState({
-    cliente: '',
-    usuario: '',
-    departamento: '',
-    data_criacao: '',
-    investimentos: '',
-    juridico: '',
-    mensalidade_roi: '',
-    ferias: '',
-    aumento_equipe: ''
-  });
   const apiUrl = process.env.REACT_APP_API_URL;
 
   const columns: GridColDef[] = [
@@ -87,33 +74,6 @@ const Roi = () => {
     }
   }, [filterUsuario, roiData]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRecord({ ...newRecord, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const token = getAccessToken();
-      await axios.post(`${apiUrl}/roi`, newRecord, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      fetchData();
-      handleClose();
-    } catch (error) {
-      console.error('Erro ao adicionar registro:', error);
-    }
-  };
-
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
@@ -129,7 +89,7 @@ const Roi = () => {
         value={filterUsuario}
         onChange={(e) => setFilterUsuario(e.target.value)} // Atualiza o valor do filtro por usuário
       />
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" >
         Adicionar Registro
       </Button>
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
