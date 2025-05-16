@@ -67,7 +67,7 @@ const AppWrapper = () => {
                 </PrivateRoute>
               } />
               <Route path="*" element={<Navigate to="/login" />} />
-              <Route path="/dre" element={
+              <Route path="/Highlights" element={
                 <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Dre />
                 </PrivateRoute>
@@ -107,7 +107,7 @@ const AppWrapper = () => {
                   <SucessoCliente />
                 </PrivateRoute>
               } />
-              <Route path="/sinal-amarelo" element={
+              <Route path="/Alertas" element={
                 <PrivateRoute allowedDepartments={['Analista', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <SinalAmarelo />
                 </PrivateRoute>
@@ -122,17 +122,17 @@ const AppWrapper = () => {
                   <CadastrarFerramentas />
                 </PrivateRoute>
               } />
-              <Route path="/Prospeccao" element={
+              <Route path="/Funil" element={
                 <PrivateRoute allowedDepartments={['Comercial', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Prospeccao />
                 </PrivateRoute>
               } />
-              <Route path="/Tarefas" element={
+              <Route path="/RegistrosDeReunioes" element={
                 <PrivateRoute allowedDepartments={['Operacional', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Reuniao />
                 </PrivateRoute>
               } />
-              <Route path="/OverDelivery" element={
+              <Route path="/JornadaCrescimentoOverdelivery" element={
                 <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Roi />
                 </PrivateRoute>
@@ -142,7 +142,7 @@ const AppWrapper = () => {
                   <Indicacao />
                 </PrivateRoute>
               } />
-              <Route path="/parceria" element={
+              <Route path="/Parceiros" element={
                 <PrivateRoute allowedDepartments={['Financeiro', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <Parceria />
                 </PrivateRoute>
@@ -193,7 +193,7 @@ const AppWrapper = () => {
               <Route path="/cadastro" element={
                   <Cadastro/>
               }/>
-              <Route path="/NpsInterno" element={
+              <Route path="/JornadaCrescimentoCore" element={
                 <PrivateRoute allowedDepartments={['Costumer Services', 'developer', 'Diretor', 'Gestor', 'Consultor']}>
                   <HardSkills />
                 </PrivateRoute>

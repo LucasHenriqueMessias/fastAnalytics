@@ -20,6 +20,7 @@ interface RoiData {
   contabilidade: number;
   taxas_bancarias: number;
   taxas_administrativas: number;
+  core: boolean;
 }
 
 const HardSkills = () => {
@@ -55,7 +56,11 @@ const HardSkills = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setRoiData(response.data);
+      const dataWithCore = response.data.map((item: RoiData) => ({
+        ...item,
+        core: true,
+      }));
+      setRoiData(dataWithCore);
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
@@ -82,9 +87,19 @@ const HardSkills = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        OverDelivery
+        Jornada de Crescimento Core
       </Typography>
-      <a href="a">Apresenta a avaliação de desempenho do cliente por parte do consultor.</a>
+      <div>
+  <p><strong>Descrição de cada Valor a ser preenchido:</strong></p>
+  <p>
+    <strong>0 Não Se aplica:</strong> O tema não é pertinente à realidade do cliente (ex: o cliente não utiliza máquina de cartão).<br />
+    <strong>1 Tema Não Tratado:</strong> O consultor ainda não iniciou qualquer abordagem ou análise sobre o tema.<br />
+    <strong>2 Tema identificado:</strong> O consultor identificou o tema como relevante, mas ainda não realizou ações concretas (ex: apenas anotado no plano de ação).<br />
+    <strong> 3 Tema em andamento:</strong> O consultor já iniciou ações (ex: comparou taxas, levantou dados), mas ainda sem implementação ou resultado perceptível.<br />
+    <strong>4 Tema Tratado Parcialmente:</strong> O consultor atuou, houve implementação ou mudança, mas os resultados ainda são iniciais ou abaixo do esperado.<br />
+    <strong>5 Tema tratado com excelência:</strong> O consultor atuou de forma estratégica, houve mudança concreta e os resultados foram significativos para o cliente.
+  </p>
+</div>
       <br />
       <TextField
         margin="normal"

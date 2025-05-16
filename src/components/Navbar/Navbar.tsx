@@ -146,24 +146,14 @@ const Navbar = () => {
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Operacional
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/Parceria">Parceria</a></li>
-          </ul>
-        </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Comercial
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/Indicacao">Indicação</a></li>
-            <li><a className="dropdown-item" href="/prospeccao">Prospecção</a></li>
-            <li><a className="dropdown-item" href="/NPSInterno">Nps Interno</a></li>
-            <li><a className="dropdown-item" href="/Overdelivery">OverDelivery</a></li>  
+            <li><a className="dropdown-item" href="/Funil">Funil</a></li> 
+            <li><a className="dropdown-item" href="/Parceiros">Parceiros</a></li>
           </ul>
         </li>
         
@@ -172,8 +162,10 @@ const Navbar = () => {
             Gestão
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/Tarefas">Tarefas</a></li>
-            <li><a className="dropdown-item" href="/sinal-amarelo">Sinal Amarelo</a></li>
+            <li><a className="dropdown-item" href="/RegistrosDeReunioes">Registros de Reuniões</a></li>
+            <li><a className="dropdown-item" href="/Alertas">Alertas</a></li>
+            <li><a className="dropdown-item" href="/JornadaCrescimentoCore">Jornada de Crescimento Core</a></li>
+            <li><a className="dropdown-item" href="/JornadaCrescimentoOverdelivery">Jornada de Crescimento OverDelivery</a></li> 
           </ul>
         </li>
         <li className="nav-item dropdown">
@@ -192,7 +184,7 @@ const Navbar = () => {
             <li><a className="dropdown-item " href="/clientes">Clientes Fast</a></li>
             {/* <li><a className="dropdown-item" href="/cadastro-cliente">Cadastrar Cliente</a></li> */}
             <li><a className="dropdown-item" href="/cadastro">Cadastro</a></li>
-            <li><a className="dropdown-item" href="/dre">Dre</a></li>
+            <li><a className="dropdown-item" href="/Highlights">Highlights</a></li>
             <li><a className="dropdown-item" href="/fotografia-cliente">Fotografia</a></li>
             <li><a className="dropdown-item" href="/dores-cliente">Dores</a></li>
             <li><a className="dropdown-item" href="/socios">Sócios</a></li>

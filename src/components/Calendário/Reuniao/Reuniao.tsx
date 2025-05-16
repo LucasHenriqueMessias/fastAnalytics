@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme } from '@mui/material';
+import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
+import { Container, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, useTheme, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import axios from 'axios';
-import { getAccessToken } from '../../LocalStorage/LocalStorage';
+import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
 import { tokens } from '../../../theme';
-
 
 const Reuniao = () => {
   const [reuniaoData, setReuniaoData] = useState([]);
@@ -16,21 +15,26 @@ const Reuniao = () => {
     tipo_reuniao: '',
     local_reuniao: '',
     Ata_reuniao: '',
-    data_marcada: '',
     data_realizada: '',
-    data_criacao: '',
-    nps_reuniao: ''
+    nps_reuniao: '',
   });
-//removido o caminho da reunião
+
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'user', headerName: 'Usuário', width: 150 },
+    { field: 'user', headerName: 'Colaborador', width: 150 },
     { field: 'cliente', headerName: 'Cliente', width: 150 },
     { field: 'status', headerName: 'Status', width: 150 },
     { field: 'tipo_reuniao', headerName: 'Tipo de Reunião', width: 150 },
     { field: 'local_reuniao', headerName: 'Local da Reunião', width: 150 },
-    { field: 'Ata_reuniao', headerName: 'Ata da Reunião', width: 150 },
-    { field: 'data_marcada', headerName: 'Data Marcada', width: 180 },
+    {
+      field: 'Ata_reuniao',
+      headerName: 'Ata da Reunião',
+      width: 200,
+      renderCell: (params) => (
+        <span style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+          {params.value}
+        </span>
+      ),
+    },
     { field: 'data_realizada', headerName: 'Data Realizada', width: 150 },
     { field: 'nps_reuniao', headerName: 'NPS', width: 150, type: 'number' },
   ];
@@ -61,13 +65,21 @@ const Reuniao = () => {
     setOpen(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRecord({ ...newRecord, [e.target.name]: e.target.value });
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewRecord({ ...newRecord, [name]: value });
+  };
+
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    setNewRecord({ ...newRecord, [name]: value });
   };
 
   const handleSubmit = async () => {
     try {
       const token = getAccessToken();
+
+      newRecord.user = getUsername() ?? '';
       await axios.post(`${process.env.REACT_APP_API_URL}/tab-reuniao`, newRecord, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -80,48 +92,48 @@ const Reuniao = () => {
     }
   };
 
-  const theme = useTheme(); //define o tema que será utilizado
-  const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
+  const handleCellDoubleClick: GridEventListener<'cellDoubleClick'> = (params) => {
+    if (params.field === 'Ata_reuniao' && params.value) {
+      const url = typeof params.value === 'string' && params.value.startsWith('http') 
+        ? params.value 
+        : `https://${params.value}`;
+      window.open(url, '_blank');
+    }
+  };
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Tarefas
+        Registros de Reuniões
       </Typography>
-      <a href=' '> Atividades dos colaboradoes para com os clientes</a>
-      <br />
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
       </Button>
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-        <DataGrid rows={reuniaoData} columns={columns} autoPageSize
-        sx={{
-          '& .MuiDataGrid-columnHeader': {
-            backgroundColor: colors.lightBlue[900], //cabeçalho da tabela
-          },
-          
-          '& .MuiDataGrid-virtualScroller': {
-            backgroundColor: colors.white[500], //Linhas da tabela
-          },
-          '& .MuiDataGrid-footerContainer': {
-            backgroundColor: colors.lightBlue[900], //Rodapé da tabela
-          }
-          
-        }}
-         />
+        <DataGrid
+          rows={reuniaoData}
+          columns={columns}
+          autoPageSize
+          onCellDoubleClick={handleCellDoubleClick}
+          sx={{
+            '& .MuiDataGrid-columnHeader': {
+              backgroundColor: colors.lightBlue[900],
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.white[500],
+            },
+            '& .MuiDataGrid-footerContainer': {
+              backgroundColor: colors.lightBlue[900],
+            },
+          }}
+        />
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Registro</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            name="user"
-            label="Usuário"
-            type="text"
-            fullWidth
-            value={newRecord.user}
-            onChange={handleChange}
-          />
           <TextField
             margin="dense"
             name="cliente"
@@ -129,26 +141,42 @@ const Reuniao = () => {
             type="text"
             fullWidth
             value={newRecord.cliente}
-            onChange={handleChange}
+            onChange={handleTextFieldChange}
           />
-          <TextField
+          <Select
             margin="dense"
             name="status"
-            label="Status"
-            type="text"
-            fullWidth
             value={newRecord.status}
-            onChange={handleChange}
-          />
-          <TextField
+            onChange={handleSelectChange}
+            fullWidth
+            displayEmpty
+          >
+            <MenuItem value="" disabled>
+              Status
+            </MenuItem>
+            <MenuItem value="Pendente">Pendente</MenuItem>
+            <MenuItem value="Realizado">Realizado</MenuItem>
+            <MenuItem value="NA">Não Aplicável</MenuItem>
+          </Select>
+          <Select
             margin="dense"
             name="tipo_reuniao"
-            label="Tipo de Reunião"
-            type="text"
-            fullWidth
             value={newRecord.tipo_reuniao}
-            onChange={handleChange}
-          />
+            onChange={handleSelectChange}
+            fullWidth
+            displayEmpty
+          >
+            <MenuItem value="" disabled>
+              Selecione o Tipo de Reunião
+            </MenuItem>
+            <MenuItem value="RD">RD</MenuItem>
+            <MenuItem value="RE">RE</MenuItem>
+            <MenuItem value="RC">RC</MenuItem>
+            <MenuItem value="RI">RI</MenuItem>
+            <MenuItem value="RP">RP</MenuItem>
+            <MenuItem value="RAE">RAE</MenuItem>
+            <MenuItem value="RA">RA</MenuItem>
+          </Select>
           <TextField
             margin="dense"
             name="local_reuniao"
@@ -156,7 +184,7 @@ const Reuniao = () => {
             type="text"
             fullWidth
             value={newRecord.local_reuniao}
-            onChange={handleChange}
+            onChange={handleTextFieldChange}
           />
           <TextField
             margin="dense"
@@ -165,19 +193,7 @@ const Reuniao = () => {
             type="text"
             fullWidth
             value={newRecord.Ata_reuniao}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="data_marcada"
-            label="Data Marcada"
-            type="date"
-            fullWidth
-            value={newRecord.data_marcada}
-            onChange={handleChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            onChange={handleTextFieldChange}
           />
           <TextField
             margin="dense"
@@ -186,7 +202,7 @@ const Reuniao = () => {
             type="date"
             fullWidth
             value={newRecord.data_realizada}
-            onChange={handleChange}
+            onChange={handleTextFieldChange}
             InputLabelProps={{
               shrink: true,
             }}
@@ -198,7 +214,7 @@ const Reuniao = () => {
             type="number"
             fullWidth
             value={newRecord.nps_reuniao}
-            onChange={handleChange}
+            onChange={handleTextFieldChange}
           />
         </DialogContent>
         <DialogActions>

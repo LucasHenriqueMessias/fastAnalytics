@@ -121,7 +121,7 @@ const Dre = () => {
   const colors = tokens(theme.palette.mode); // inclui o padrão de cores adotado em theme.palette.mode para colors
   return (
     <div>
-      <h1>DRE</h1>
+      <h1>Highlights</h1>
       <Button variant="contained" color="primary" onClick={handleAddDre}>
         Cadastrar DRE
       </Button>

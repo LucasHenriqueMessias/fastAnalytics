@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, useTheme, FormControlLabel, Checkbox } from '@mui/material';
 import { tokens } from '../../../theme';
 import { getAccessToken, getUsername } from '../../LocalStorage/LocalStorage';
 
@@ -24,6 +24,7 @@ interface FotografiaData {
   estrutura: string;
   cultura_empresarial: string;
   pro_labore: number;
+  fotografia_inicial: boolean; // Added property
 }
 
 const FotografiaCliente = () => {
@@ -48,6 +49,7 @@ const FotografiaCliente = () => {
     estrutura: '',
     cultura_empresarial: '',
     pro_labore: 0,
+    fotografia_inicial: false,
   });
 
   useEffect(() => {
@@ -78,6 +80,7 @@ const FotografiaCliente = () => {
           estrutura: item.estrutura,
           cultura_empresarial: item.cultura_empresarial,
           pro_labore: item.pro_labore,
+          fotografia_inicial: item.fotografia_inicial,
         }));
         setRows(data);
       } catch (error) {
@@ -104,7 +107,7 @@ const FotografiaCliente = () => {
   const handleSubmitFotografia = async () => {
     try {
       const token = getAccessToken();
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/tab-fotografia-clienet`, newFotografia, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/tab-fotografia-cliente`, newFotografia, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -130,6 +133,8 @@ const FotografiaCliente = () => {
         estrutura: '',
         cultura_empresarial: '',
         pro_labore: 0,
+        fotografia_inicial: false,
+        
       });
     } catch (error) {
       console.error('Erro ao cadastrar Fotografia:', error);
@@ -174,6 +179,17 @@ const FotografiaCliente = () => {
       <Dialog open={showForm} onClose={handleCloseForm}>
         <DialogTitle>Cadastro de Fotografia</DialogTitle>
         <DialogContent>
+        <FormControlLabel
+            control={
+              <Checkbox
+                checked={newFotografia.fotografia_inicial}
+                onChange={(e) =>
+                  setNewFotografia({ ...newFotografia, fotografia_inicial: e.target.checked })
+                }
+              />
+            }
+            label="Fotografia Inicial"
+          />
           <TextField
             margin="dense"
             label="Usuário"

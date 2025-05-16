@@ -81,7 +81,7 @@ const Parceria = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Parceria
+        Parceiros
       </Typography>
       <a href=' '> Parceiros que fazem parte do Ecossistema Fast</a>
       <br></br>

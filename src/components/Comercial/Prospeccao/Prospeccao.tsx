@@ -96,7 +96,7 @@ const Prospeccao = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Dados de Prospecção
+        Funil
       </Typography>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Adicionar Registro
