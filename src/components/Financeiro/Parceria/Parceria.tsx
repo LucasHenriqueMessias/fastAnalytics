@@ -11,8 +11,7 @@ const Parceria = () => {
   const [parceriaData, setParceriaData] = useState([]);
   const [open, setOpen] = useState(false);
   const [newRecord, setNewRecord] = useState({
-    data_criacao: '',
-    usuario: '',
+    padrinho: '',
     parceiro: '',
     justificativa: '',
     status: '',
@@ -22,7 +21,7 @@ const Parceria = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     { field: 'data_criacao', headerName: 'Data de Criação', width: 180 },
-    { field: 'usuario', headerName: 'Usuário', width: 150 },
+    { field: 'padrinho', headerName: 'Padrinho', width: 150 },
     { field: 'parceiro', headerName: 'Parceiro', width: 150 },
     { field: 'justificativa', headerName: 'Justificativa', width: 250 },
     { field: 'status', headerName: 'Status', width: 150 },
@@ -112,11 +111,11 @@ const Parceria = () => {
          
           <TextField
             margin="dense"
-            name="usuario"
-            label="Usuário"
+            name="padrinho"
+            label="Padrinho"
             type="text"
             fullWidth
-            value={newRecord.usuario}
+            value={newRecord.padrinho}
             onChange={handleChange}
           />
           <TextField

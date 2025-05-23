@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { ColorModeContext, tokens } from '../../theme';
+import './Navbar.css';
 
 interface Notification {
   id: number;
@@ -146,36 +147,72 @@ const Navbar = () => {
     </button>
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+     
+      
+
         <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Comercial
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/Indicacao">Indicação</a></li>
-            <li><a className="dropdown-item" href="/Funil">Funil</a></li> 
-            <li><a className="dropdown-item" href="/Parceiros">Parceiros</a></li>
-          </ul>
-        </li>
-        
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Gestão
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/RegistrosDeReunioes">Registros de Reuniões</a></li>
-            <li><a className="dropdown-item" href="/Alertas">Alertas</a></li>
-            <li><a className="dropdown-item" href="/JornadaCrescimentoCore">Jornada de Crescimento Core</a></li>
-            <li><a className="dropdown-item" href="/JornadaCrescimentoOverdelivery">Jornada de Crescimento OverDelivery</a></li> 
-          </ul>
-        </li>
-        <li className="nav-item dropdown">
+  <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownGestao" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Gestão
+  </a>
+  <ul className="dropdown-menu" aria-labelledby="navbarDropdownGestao">
+  <li className="dropdown-submenu">
+    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Consultor
+      </a>
+      <ul className="dropdown-menu" aria-labelledby="navbarDropdownComercial">
+      <li><a className="dropdown-item" href="/RegistrosDeReunioes">Registros de Reuniões</a></li>
+      <li><a className="dropdown-item" href="/JornadaCrescimentoCore">Jornada de Crescimento Core</a></li>
+    <li><a className="dropdown-item" href="/JornadaCrescimentoOverdelivery">Jornada de Crescimento OverDelivery</a></li>
+      </ul>
+    </li>
+
+    <li className="dropdown-submenu">
+    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Alertas
+    </a>
+      <ul className="dropdown-menu" aria-labelledby="navbarDropdownComercial">
+        <li><a className="dropdown-item" href="/Alertas">Consultar</a></li>
+        <li><a className="dropdown-item" href="/Alertas">Registrar</a></li>
+      </ul>
+    </li>
+
+
+
+
+    
+    
+    <li className="dropdown-submenu">
+    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Comercial
+      </a>
+      <ul className="dropdown-menu" aria-labelledby="navbarDropdownComercial">
+        <li><a className="dropdown-item" href="/Indicacao">Indicação</a></li>
+        <li><a className="dropdown-item" href="/Funil">Funil</a></li>
+        <li><a className="dropdown-item" href="/Parceiros">Parceiros</a></li>
+      </ul>
+    </li>
+
+     <li className="dropdown-submenu">
           <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Analista
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a className="dropdown-item" href="/cadastrar-ferramentas">Cadastrar Ferramentas</a></li>
+            <li><a className="dropdown-item" href="/ferramentas">Consultar Ferramentas</a></li>
           </ul>
         </li>
+
+        <li className="dropdown-submenu">
+          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            CS
+          </a>
+          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a className="dropdown-item" href="/ferramentas">NPS</a></li>
+          </ul>
+        </li>
+  </ul>
+</li>
+       
         <li className="nav-item dropdown">
           <a className="nav-link  dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cliente
@@ -196,7 +233,6 @@ const Navbar = () => {
             Ferramentas Gerais
           </a>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a className="dropdown-item" href="/ferramentas">Ferramentas dos Analistas</a></li>
             <li><a className="dropdown-item" href="/biblioteca">Biblioteca</a></li>
             <li><a className="dropdown-item" href="/eventos">Eventos</a></li>
           </ul>
